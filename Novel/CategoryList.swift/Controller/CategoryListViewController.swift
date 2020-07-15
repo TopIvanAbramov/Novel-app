@@ -31,10 +31,6 @@ class CategoryListViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.collectionViewLayout = compositionalLayout
-        
-        createCategories()
-        
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -81,41 +77,11 @@ class CategoryListViewController: UIViewController {
     
 //  MARK:- CollectionViewCompositionalLayout
     
-//    func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
-//
-////        Log.printLog(identifier: elementKind, message: indexPath)
-//        if elementKind == UICollectionView.elementKindSectionHeader, let view = view as? UIView {
-//
-//            view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-//        } else if elementKind == SectionView.kind {
-//            
-//            view.backgroundColor = UIColor(hex: categories[indexPath.section].color)
-////            let evenSectionColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
-////            let oddSectionColor = #colorLiteral(red: 0.7254902124, green: 0.4784313738, blue: 0.09803921729, alpha: 1)
-////
-////            view.backgroundColor = (indexPath.section % 2 == 0) ? evenSectionColor : oddSectionColor
-//        }
-//    }
-    
-    
     private lazy var compositionalLayout: UICollectionViewCompositionalLayout = {
         let layout = UICollectionViewCompositionalLayout { [weak self]
             (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-//            switch sectionIndex) {
-//            case .brandNames:
                 return self?.setupCategoryListSection()
-//            case .catFoods:
-//                return self?.setupCatFoodsSection()
-//            case .cats:
-//                return self?.setupCatsSection()
-//            case .none:
-//                fatalError("Should not be none ")
-//            }
         }
-        
-//        let backgroundView = BackgroundDecorationView()
-//        backgroundView.backgroundColor = .red
-        
         layout.register(BackgroundDecorationView.self,
         forDecorationViewOfKind: "background")
         
@@ -156,7 +122,6 @@ class CategoryListViewController: UIViewController {
         let backgroundItem = NSCollectionLayoutDecorationItem.background(elementKind: "background")
         section.decorationItems = [backgroundItem]
         
-        
         return section
     }
     
@@ -165,7 +130,7 @@ class CategoryListViewController: UIViewController {
     
     func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
         if elementKind == "background" {
-            view.backgroundColor =  UIColor(hex: categories[indexPath.section].color)
+            view.backgroundColor = UIColor(hex: categories[indexPath.section].color)
         }
 
     }

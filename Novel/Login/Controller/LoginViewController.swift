@@ -224,12 +224,19 @@ class LoginViewController: UIViewController {
             
             if let user = authResult?.user {
                 let userRef = self?.ref.child(user.uid)
-                userRef?.setValue(["email": email])
+                userRef?.setValue(["email": email, "username": self?.username.text ?? "", "uid": user.uid, "refCode": user.uid, "diamondCurrency": 0, "ticketCurrency": 0])
 
                 self?.performSegue(withIdentifier: "moveToMainScreen", sender: self)
             }
         })
     }
+//
+//    let uid: String
+//    let email: String
+//    let username: String
+//    let refCode: String
+//    let diamondCurrency: Int
+//    let ticketCurrency: Int
     
     
     @IBAction func resetPasswordTapped(sender: UIButton) {
@@ -274,22 +281,6 @@ class LoginViewController: UIViewController {
             let dst = segue.destination as! LoginViewController
             dst.authorizationState = .signUp
         }
-    }
-    
-    
-    func randomAlphaNumericString(length: Int) -> String {
-        let allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        let allowedCharsCount = UInt32(allowedChars.count)
-        var randomString = ""
-
-        for _ in 0..<length {
-            let randomNum = Int(arc4random_uniform(allowedCharsCount))
-            let randomIndex = allowedChars.index(allowedChars.startIndex, offsetBy: randomNum)
-            let newCharacter = allowedChars[randomIndex]
-            randomString += String(newCharacter)
-        }
-
-        return randomString
     }
     
     func showAlert(title : String, message : String, buttonText : String) {

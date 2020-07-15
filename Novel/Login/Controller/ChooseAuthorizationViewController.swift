@@ -31,16 +31,15 @@ class ChooseAuthorizationViewController: UIViewController {
     @IBOutlet weak var logoImage: UIImageView!
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "moveToSignUp" {
+        if segue.identifier == "signUp" {
             stackView.isHidden = true
             logoImage.isHidden =  true
             let dst = segue.destination as! LoginViewController
             dst.authorizationState = .signUp
-        } else if segue.identifier == "moveToSignIn" {
+        } else if segue.identifier == "singIn" {
             stackView.isHidden = true
             logoImage.isHidden = true
             let dst = segue.destination as! LoginViewController
-            
             dst.authorizationState = .singIn
         }
     }

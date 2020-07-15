@@ -20,9 +20,12 @@
 		2C47400B24BD88B000E4B663 /* SectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C47400A24BD88B000E4B663 /* SectionView.swift */; };
 		2C47400F24BDA3B000E4B663 /* BackgroundDecorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C47400E24BDA3AF00E4B663 /* BackgroundDecorationView.swift */; };
 		2C84B8A424BB11C7006D557A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C84B8A324BB11C7006D557A /* User.swift */; };
+		2CB0352D24BF0A7600AFD297 /* MainScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB0352C24BF0A7600AFD297 /* MainScreenViewController.swift */; };
 		2CC3FD5524BA4B22008A604F /* ChooseAuthorizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC3FD5224BA4B22008A604F /* ChooseAuthorizationViewController.swift */; };
 		2CC3FD5824BA4DF9008A604F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2CC3FD5724BA4DF9008A604F /* GoogleService-Info.plist */; };
 		2CC3FD5B24BA5477008A604F /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC3FD5A24BA5477008A604F /* RoundButton.swift */; };
+		2CC6C29324BF257800DBD220 /* StoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC6C29224BF257800DBD220 /* StoryViewController.swift */; };
+		2CC6C29524BF294E00DBD220 /* MainUITabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC6C29424BF294E00DBD220 /* MainUITabBarController.swift */; };
 		2CE088F424BA47670063D8F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CE088F324BA47670063D8F8 /* AppDelegate.swift */; };
 		2CE088F624BA47670063D8F8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CE088F524BA47670063D8F8 /* SceneDelegate.swift */; };
 		2CE088FB24BA47670063D8F8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2CE088F924BA47670063D8F8 /* Main.storyboard */; };
@@ -45,9 +48,12 @@
 		2C47400A24BD88B000E4B663 /* SectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionView.swift; sourceTree = "<group>"; };
 		2C47400E24BDA3AF00E4B663 /* BackgroundDecorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundDecorationView.swift; sourceTree = "<group>"; };
 		2C84B8A324BB11C7006D557A /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		2CB0352C24BF0A7600AFD297 /* MainScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainScreenViewController.swift; path = Novel/CategoryList.swift/MainScreenViewController.swift; sourceTree = SOURCE_ROOT; };
 		2CC3FD5224BA4B22008A604F /* ChooseAuthorizationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseAuthorizationViewController.swift; sourceTree = "<group>"; };
 		2CC3FD5724BA4DF9008A604F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2CC3FD5A24BA5477008A604F /* RoundButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
+		2CC6C29224BF257800DBD220 /* StoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryViewController.swift; sourceTree = "<group>"; };
+		2CC6C29424BF294E00DBD220 /* MainUITabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainUITabBarController.swift; path = Novel/CategoryList.swift/MainUITabBarController.swift; sourceTree = SOURCE_ROOT; };
 		2CE088F024BA47670063D8F8 /* Novel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Novel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CE088F324BA47670063D8F8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2CE088F524BA47670063D8F8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -75,7 +81,6 @@
 		2C31752924BC63D800AD5907 /* HistoryList */ = {
 			isa = PBXGroup;
 			children = (
-				2C47400024BCCB6900E4B663 /* Settings */,
 				2C31752C24BC63F200AD5907 /* Model */,
 				2C31752B24BC63ED00AD5907 /* View */,
 				2C31752A24BC63E600AD5907 /* Controller */,
@@ -170,6 +175,8 @@
 				2C43E71024BAEFB500F5BBA2 /* CategoryListViewController.swift */,
 				2C43E71224BAF11500F5BBA2 /* CategoryListTableViewCell.swift */,
 				2C473FFE24BCB06E00E4B663 /* SectionHeaderView.swift */,
+				2CB0352C24BF0A7600AFD297 /* MainScreenViewController.swift */,
+				2CC6C29424BF294E00DBD220 /* MainUITabBarController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -214,6 +221,38 @@
 			path = CustomViews;
 			sourceTree = "<group>";
 		};
+		2CC6C28E24BF254000DBD220 /* Story */ = {
+			isa = PBXGroup;
+			children = (
+				2CC6C29124BF256000DBD220 /* Model */,
+				2CC6C29024BF255800DBD220 /* View */,
+				2CC6C28F24BF255200DBD220 /* Controller */,
+			);
+			path = Story;
+			sourceTree = "<group>";
+		};
+		2CC6C28F24BF255200DBD220 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				2CC6C29224BF257800DBD220 /* StoryViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		2CC6C29024BF255800DBD220 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		2CC6C29124BF256000DBD220 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		2CE088E724BA47670063D8F8 = {
 			isa = PBXGroup;
 			children = (
@@ -235,9 +274,11 @@
 		2CE088F224BA47670063D8F8 /* Novel */ = {
 			isa = PBXGroup;
 			children = (
+				2CE0890724BA478C0063D8F8 /* Application */,
+				2CC6C28E24BF254000DBD220 /* Story */,
+				2C47400024BCCB6900E4B663 /* Settings */,
 				2C31752924BC63D800AD5907 /* HistoryList */,
 				2C43E70C24BAEF6F00F5BBA2 /* CategoryList.swift */,
-				2CE0890724BA478C0063D8F8 /* Application */,
 				2CE0890C24BA48B80063D8F8 /* Login */,
 				2C43789524BA649E00629818 /* Profile */,
 				2CC3FD5924BA5460008A604F /* CustomViews */,
@@ -356,6 +397,7 @@
 				2CE088ED24BA47670063D8F8 /* Frameworks */,
 				2CE088EE24BA47670063D8F8 /* Resources */,
 				0A648C4F119B821540A556A2 /* [CP] Embed Pods Frameworks */,
+				A572361A90422CDA63170B7B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -453,6 +495,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		A572361A90422CDA63170B7B /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Novel/Pods-Novel-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Novel/Pods-Novel-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Novel/Pods-Novel-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -460,6 +519,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CC6C29324BF257800DBD220 /* StoryViewController.swift in Sources */,
 				2C2C743824BAEAAD001763EC /* LoginViewController.swift in Sources */,
 				2C43789A24BA651900629818 /* ProfileViewController.swift in Sources */,
 				2C43E71524BAF29800F5BBA2 /* CategoryList.swift in Sources */,
@@ -467,6 +527,7 @@
 				2C31752E24BC640900AD5907 /* History.swift in Sources */,
 				2C47400F24BDA3B000E4B663 /* BackgroundDecorationView.swift in Sources */,
 				2C43E71324BAF11500F5BBA2 /* CategoryListTableViewCell.swift in Sources */,
+				2CC6C29524BF294E00DBD220 /* MainUITabBarController.swift in Sources */,
 				2C43E71124BAEFB500F5BBA2 /* CategoryListViewController.swift in Sources */,
 				2CC3FD5B24BA5477008A604F /* RoundButton.swift in Sources */,
 				2C47400524BCCBA300E4B663 /* SettingsViewController.swift in Sources */,
@@ -477,6 +538,7 @@
 				2C473FFF24BCB06E00E4B663 /* SectionHeaderView.swift in Sources */,
 				2C84B8A424BB11C7006D557A /* User.swift in Sources */,
 				2CC3FD5524BA4B22008A604F /* ChooseAuthorizationViewController.swift in Sources */,
+				2CB0352D24BF0A7600AFD297 /* MainScreenViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,6 +12,11 @@ import Firebase
 class ProfileViewController: UITableViewController {
 
     @IBOutlet weak var promocodeLabel: UILabel!
+    @IBOutlet weak var username: UILabel!
+    
+    var ref: DatabaseReference!
+    var user: AppUser!
+    var categories = Array<Category>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,8 +24,41 @@ class ProfileViewController: UITableViewController {
         addReferalCodeCopyGesture()
     }
     
+    func setupprofile() {
+        promocodeLabel.text = user.refCode
+        username.text = user.username
+        
+        promocodeLabel.sizeToFit()
+    }
+    
+    //    MARK: - ViewLifeCycle
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         tabBarController?.title = "Профиль"
+        
+        guard let currentUser = Auth.auth().currentUser else { return }
+        
+        guard currentUser != nil else {
+            print("No current user")
+            logOutTapped(sender: (Any).self)
+            
+            return
+        }
+        
+        
+//        logOutTapped(sender: (Any).self)
+        
+        user = AppUser(user: currentUser)
+        ref = Database.database().reference(withPath: "users/\(user.uid)")
+        
+        print(user.uid)
+        
+        
+        self.ref.observe(.value, with: {[weak self] (snapshot) in
+            self?.user = AppUser(snapshot: snapshot)
+            self?.setupprofile()
+        })
     }
     
     func addReferalCodeCopyGesture() {
@@ -35,7 +73,7 @@ class ProfileViewController: UITableViewController {
     }
     
 
-    @IBAction func logOutTapped(sender: UIButton) {
+    @IBAction func logOutTapped(sender: Any) {
         
         do {
             try Firebase.Auth.auth().signOut()
