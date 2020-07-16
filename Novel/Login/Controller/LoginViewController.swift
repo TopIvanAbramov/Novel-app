@@ -224,9 +224,24 @@ class LoginViewController: UIViewController {
             
             if let user = authResult?.user {
                 let userRef = self?.ref.child(user.uid)
+                
                 userRef?.setValue(["email": email, "username": self?.username.text ?? "", "uid": user.uid, "refCode": user.uid, "diamondCurrency": 0, "ticketCurrency": 0])
 
+                self?.checkReferal(code: self?.username.text ?? "", withUserRef: userRef)
                 self?.performSegue(withIdentifier: "moveToMainScreen", sender: self)
+            }
+        })
+    }
+    
+    func checkReferal(code: String, withUserRef userRef: DatabaseReference?) {
+        guard !code.isEmpty, let userRef = userRef else { return }
+        
+        ref.child(code).observeSingleEvent(of: .value, with: {[weak self] (snapshot) in
+            if snapshot.exists() {
+                print("User exists")
+                let user = AppUser(snapshot: snapshot)
+                self?.ref.child(code).child("ticketCurrency").setValue(user.ticketCurrency + 50)
+                userRef.child("ticketCurrency").setValue(50)
             }
         })
     }
