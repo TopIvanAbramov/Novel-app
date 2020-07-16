@@ -24,7 +24,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var email: UITextField!
     @IBOutlet weak var footerHeight: NSLayoutConstraint!
-    @IBOutlet weak var username: UITextField!
+    @IBOutlet weak var promocode: UITextField!
     @IBOutlet weak var bottomButtonConstraints: NSLayoutConstraint!
     
     var ref: DatabaseReference!
@@ -58,8 +58,8 @@ class LoginViewController: UIViewController {
         
         if let image = UIImage(named: "username") {
             if authorizationState == .signUp {
-                   username.tintColor = .gray
-                   username.setIcon(image)
+                   promocode.tintColor = .gray
+                   promocode.setIcon(image)
             }
         }
         
@@ -70,17 +70,17 @@ class LoginViewController: UIViewController {
         email.layer.addSublayer(bottomLine)
         
         let bottomLine2 = CALayer()
-        bottomLine2.frame = CGRect(x: 0.0, y: password.bounds.height - 20, width: password.frame.width, height: 1.0)
+        bottomLine2.frame = CGRect(x: 0.0, y: password.bounds.height - 20, width: password.bounds.width, height: 1.0)
         bottomLine2.backgroundColor = #colorLiteral(red: 0.3215686275, green: 0.5176470588, blue: 0.8823529412, alpha: 1)
         password.borderStyle = UITextField.BorderStyle.none
         password.layer.addSublayer(bottomLine2)
         
         if authorizationState == .signUp {
             let bottomLine3 = CALayer()
-            bottomLine3.frame = CGRect(x: 0.0, y: password.bounds.height - 20, width: password.frame.width, height: 1.0)
+            bottomLine3.frame = CGRect(x: 0.0, y: promocode.bounds.height - 20, width: promocode.bounds.width, height: 1.0)
             bottomLine3.backgroundColor = #colorLiteral(red: 0.3215686275, green: 0.5176470588, blue: 0.8823529412, alpha: 1)
-            username.borderStyle = UITextField.BorderStyle.none
-            username.layer.addSublayer(bottomLine2)
+            promocode.borderStyle = UITextField.BorderStyle.none
+            promocode.layer.addSublayer(bottomLine3)
         }
         
         
@@ -225,26 +225,13 @@ class LoginViewController: UIViewController {
             if let user = authResult?.user {
                 let userRef = self?.ref.child(user.uid)
                 
-                userRef?.setValue(["email": email, "username": self?.username.text ?? "", "uid": user.uid, "refCode": user.uid, "diamondCurrency": 0, "ticketCurrency": 0])
+                userRef?.setValue(["email": email, "username": self?.promocode.text ?? "", "uid": user.uid, "refCode": self?.promocode.text ?? "_", "diamondCurrency": 0, "ticketCurrency": 0, "didAddreferalBonus": false])
 
-                self?.checkReferal(code: self?.username.text ?? "", withUserRef: userRef)
                 self?.performSegue(withIdentifier: "moveToMainScreen", sender: self)
             }
         })
     }
     
-    func checkReferal(code: String, withUserRef userRef: DatabaseReference?) {
-        guard !code.isEmpty, let userRef = userRef else { return }
-        
-        ref.child(code).observeSingleEvent(of: .value, with: {[weak self] (snapshot) in
-            if snapshot.exists() {
-                print("User exists")
-                let user = AppUser(snapshot: snapshot)
-                self?.ref.child(code).child("ticketCurrency").setValue(user.ticketCurrency + 50)
-                userRef.child("ticketCurrency").setValue(50)
-            }
-        })
-    }
     
     @IBAction func resetPasswordTapped(sender: UIButton) {
         
@@ -266,7 +253,9 @@ class LoginViewController: UIViewController {
     
     func resetPassword(forEmail email: String) {
         Auth.auth().sendPasswordReset(withEmail: email) { error in
-            self.showAlert(title: "Не удается сбросить пароль", message: error?.localizedDescription ?? "Попробуйте снова", buttonText: "Ок")
+            if error != nil {
+                self.showAlert(title: "Не удается сбросить пароль", message: error?.localizedDescription ?? "Попробуйте снова", buttonText: "Ок")
+            }
         }
     }
     

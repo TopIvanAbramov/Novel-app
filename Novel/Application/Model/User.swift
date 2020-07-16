@@ -15,6 +15,7 @@ struct AppUser {
     let email: String
     let username: String
     let refCode: String
+    let didAddreferalBonus: Bool
     let diamondCurrency: Int
     let ticketCurrency: Int
     
@@ -25,6 +26,7 @@ struct AppUser {
         self.refCode = user.uid
         self.diamondCurrency = 0
         self.ticketCurrency = 0
+        self.didAddreferalBonus = true
     }
     
     init(snapshot: DataSnapshot) {
@@ -35,5 +37,6 @@ struct AppUser {
         refCode = snapshotValue["refCode"] as! String
         diamondCurrency = snapshotValue["diamondCurrency"] as! Int
         ticketCurrency = snapshotValue["ticketCurrency"] as! Int
+        didAddreferalBonus = snapshotValue["didAddreferalBonus"] as! Bool
     }
 }

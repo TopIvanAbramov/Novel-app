@@ -15,7 +15,7 @@ class CategoryListViewController: UIViewController {
     
     var ref: DatabaseReference!
     var user: AppUser!
-     var categories = Array<Category>()
+    var categories = Array<Category>()
     
 
 
@@ -31,6 +31,8 @@ class CategoryListViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.collectionViewLayout = compositionalLayout
+        
+        self.addreferalBonus()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -47,6 +49,30 @@ class CategoryListViewController: UIViewController {
             
             self?.categories = _categories
             self?.collectionView.reloadData()
+        })
+    }
+    
+    
+    func addreferalBonus() {
+        let userRef = Database.database().reference(withPath: "users")
+        
+        userRef.child("\(user.uid)").observeSingleEvent(of: .value, with: {(snapshot) in
+            let user = AppUser(snapshot: snapshot)
+            if !(user.didAddreferalBonus) {
+                _ = getBonuses(completion: { bonuses in
+                    
+                    userRef.child("\(user.uid)/ticketCurrency").setValue((user.ticketCurrency) + bonuses.referalBonuse)
+                    userRef.child("\(user.uid)/didAddreferalBonus").setValue(true)
+                    
+                    userRef.child("\(user.refCode)").observeSingleEvent(of: .value, with: {[weak self] (snapshot) in
+                        if snapshot.exists() {
+                            let user = AppUser(snapshot: snapshot)
+                            userRef.child("\(user.refCode)/ticketCurrency").setValue((user.ticketCurrency) + bonuses.referalBonuse)
+                        }
+                    })
+
+                })
+            }
         })
     }
     

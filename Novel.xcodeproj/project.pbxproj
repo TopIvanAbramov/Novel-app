@@ -12,6 +12,8 @@
 		2C31752E24BC640900AD5907 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C31752D24BC640900AD5907 /* History.swift */; };
 		2C31753024BC66A700AD5907 /* HistoryListCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C31752F24BC66A700AD5907 /* HistoryListCollectionViewController.swift */; };
 		2C31753224BC685200AD5907 /* HistoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C31753124BC685200AD5907 /* HistoryCollectionViewCell.swift */; };
+		2C4143CA24C063FE0028924A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4143C924C063FE0028924A /* Constants.swift */; };
+		2C4143D024C069FD0028924A /* Bonuses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4143CF24C069FD0028924A /* Bonuses.swift */; };
 		2C43789A24BA651900629818 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C43789924BA651900629818 /* ProfileViewController.swift */; };
 		2C43E71124BAEFB500F5BBA2 /* CategoryListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C43E71024BAEFB500F5BBA2 /* CategoryListViewController.swift */; };
 		2C43E71324BAF11500F5BBA2 /* CategoryListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C43E71224BAF11500F5BBA2 /* CategoryListTableViewCell.swift */; };
@@ -41,6 +43,8 @@
 		2C31752D24BC640900AD5907 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		2C31752F24BC66A700AD5907 /* HistoryListCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListCollectionViewController.swift; sourceTree = "<group>"; };
 		2C31753124BC685200AD5907 /* HistoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryCollectionViewCell.swift; sourceTree = "<group>"; };
+		2C4143C924C063FE0028924A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		2C4143CF24C069FD0028924A /* Bonuses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bonuses.swift; sourceTree = "<group>"; };
 		2C43789924BA651900629818 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		2C43E71024BAEFB500F5BBA2 /* CategoryListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryListViewController.swift; sourceTree = "<group>"; };
 		2C43E71224BAF11500F5BBA2 /* CategoryListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryListTableViewCell.swift; sourceTree = "<group>"; };
@@ -289,6 +293,7 @@
 				2CE088F524BA47670063D8F8 /* SceneDelegate.swift */,
 				2CE0890124BA47680063D8F8 /* Info.plist */,
 				2CC3FD5724BA4DF9008A604F /* GoogleService-Info.plist */,
+				2C4143C924C063FE0028924A /* Constants.swift */,
 			);
 			path = Novel;
 			sourceTree = "<group>";
@@ -315,6 +320,7 @@
 			isa = PBXGroup;
 			children = (
 				2C84B8A324BB11C7006D557A /* User.swift */,
+				2C4143CF24C069FD0028924A /* Bonuses.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -523,6 +529,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2CC6C29324BF257800DBD220 /* StoryViewController.swift in Sources */,
+				2C4143CA24C063FE0028924A /* Constants.swift in Sources */,
 				2C2C05E524C03F3100B7FCF8 /* CopyableUILabel.swift in Sources */,
 				2C2C743824BAEAAD001763EC /* LoginViewController.swift in Sources */,
 				2C43789A24BA651900629818 /* ProfileViewController.swift in Sources */,
@@ -542,6 +549,7 @@
 				2C473FFF24BCB06E00E4B663 /* SectionHeaderView.swift in Sources */,
 				2C84B8A424BB11C7006D557A /* User.swift in Sources */,
 				2CC3FD5524BA4B22008A604F /* ChooseAuthorizationViewController.swift in Sources */,
+				2C4143D024C069FD0028924A /* Bonuses.swift in Sources */,
 				2CB0352D24BF0A7600AFD297 /* MainScreenViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
