@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C2C05E524C03F3100B7FCF8 /* CopyableUILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2C05E424C03F3100B7FCF8 /* CopyableUILabel.swift */; };
 		2C2C743824BAEAAD001763EC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2C743724BAEAAD001763EC /* LoginViewController.swift */; };
 		2C31752E24BC640900AD5907 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C31752D24BC640900AD5907 /* History.swift */; };
 		2C31753024BC66A700AD5907 /* HistoryListCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C31752F24BC66A700AD5907 /* HistoryListCollectionViewController.swift */; };
@@ -35,6 +36,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2C2C05E424C03F3100B7FCF8 /* CopyableUILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyableUILabel.swift; sourceTree = "<group>"; };
 		2C2C743724BAEAAD001763EC /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		2C31752D24BC640900AD5907 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		2C31752F24BC66A700AD5907 /* HistoryListCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListCollectionViewController.swift; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 			isa = PBXGroup;
 			children = (
 				2CC3FD5A24BA5477008A604F /* RoundButton.swift */,
+				2C2C05E424C03F3100B7FCF8 /* CopyableUILabel.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -520,6 +523,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2CC6C29324BF257800DBD220 /* StoryViewController.swift in Sources */,
+				2C2C05E524C03F3100B7FCF8 /* CopyableUILabel.swift in Sources */,
 				2C2C743824BAEAAD001763EC /* LoginViewController.swift in Sources */,
 				2C43789A24BA651900629818 /* ProfileViewController.swift in Sources */,
 				2C43E71524BAF29800F5BBA2 /* CategoryList.swift in Sources */,

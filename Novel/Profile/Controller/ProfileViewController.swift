@@ -20,8 +20,6 @@ class ProfileViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        addReferalCodeCopyGesture()
     }
     
     func setupprofile() {
@@ -29,6 +27,10 @@ class ProfileViewController: UITableViewController {
         username.text = user.username
         
         promocodeLabel.sizeToFit()
+    }
+    
+    @IBAction func copyButtonTapped(sender: UIButton) {
+        UIPasteboard.general.string = promocodeLabel.text
     }
     
     //    MARK: - ViewLifeCycle
@@ -59,17 +61,6 @@ class ProfileViewController: UITableViewController {
             self?.user = AppUser(snapshot: snapshot)
             self?.setupprofile()
         })
-    }
-    
-    func addReferalCodeCopyGesture() {
-        let gesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
-        
-        promocodeLabel.addGestureRecognizer(gesture)
-    }
-    
-    @objc func handleLongPress() {
-        print("Copy promocode")
-        UIPasteboard.general.string = promocodeLabel.text
     }
     
 

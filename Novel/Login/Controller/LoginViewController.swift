@@ -134,15 +134,15 @@ class LoginViewController: UIViewController {
     
     @IBAction func singIn(_ sender: Any) {
         
-        guard var email = email.text else {
-            showAlert(title: "No email supplied", message: "Please, enter email", buttonText: "ok")
+        guard var email = email.text, !email.isEmpty else {
+            showAlert(title: "Пустая почта", message: "Пожалуйста, введите вашу почту", buttonText: "ok")
             return
         }
 
         email = email.trimmingCharacters(in: .whitespacesAndNewlines)
 
-        guard var password = password.text else {
-            showAlert(title: "No password supplied", message: "Please, enter password", buttonText: "ok")
+        guard var password = password.text, !password.isEmpty else {
+            showAlert(title: "Пустой пароль", message: "Пожалуйста, введите ваш пароль", buttonText: "ok")
             return
         }
 
@@ -156,21 +156,21 @@ class LoginViewController: UIViewController {
                     
                     switch errCode {
                     case .wrongPassword:
-                        self.showAlert(title: "Cannot authorize", message: "Yor password is incorrect", buttonText: "ok")
+                        self.showAlert(title: "Не получается войти", message: "Нерпавильный пароль", buttonText: "ok")
                         break
                     
                     case .userNotFound:
-                    self.showAlert(title: "Cannot authorize", message: "Account not found", buttonText: "ok")
+                    self.showAlert(title: "Не получается войти", message: "Аккаунт не найден", buttonText: "ok")
                     break
                     
                     case .invalidEmail:
-                        self.showAlert(title: "Cannot authorize", message: "Invalid email", buttonText: "ok")
+                        self.showAlert(title: "Не получается войти", message: "Неправильная почта", buttonText: "ok")
                     
                     case .networkError:
-                        self.showAlert(title: "Cannot authorize", message: "Network error, try again", buttonText: "ok")
+                        self.showAlert(title: "Не получается войти", message: "Ошибка интернета, попробуйте снова", buttonText: "ok")
                         
                     default:
-                        self.showAlert(title: "Cannot authorize", message: "Internal error, try again", buttonText: "ok")
+                        self.showAlert(title: "Не получается войти", message: "Внутренняя ошибка, попробуйте снова", buttonText: "ok")
                         break
                     }
                 }
@@ -184,15 +184,15 @@ class LoginViewController: UIViewController {
     
     @IBAction func signUp(_ sender: Any) {
         
-        guard var email = email.text else {
-            showAlert(title: "No email supplied", message: "Please, enter email", buttonText: "ok")
+        guard var email = email.text, !email.isEmpty else {
+            showAlert(title: "Пустая почта", message: "Пожалуйста, введите вашу почту", buttonText: "ok")
             return
         }
         
         email = email.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        guard var password = password.text else {
-            showAlert(title: "No password supplied", message: "Please, enter password", buttonText: "ok")
+        guard var password = password.text, !password.isEmpty else {
+            showAlert(title: "Пустой пароль", message: "Пожалуйста, введите пароль", buttonText: "ok")
             return
         }
         
@@ -205,18 +205,18 @@ class LoginViewController: UIViewController {
                                    
                    switch errCode {
                    case .credentialAlreadyInUse, .emailAlreadyInUse:
-                    self?.showAlert(title: "Cannot register", message: "Account with same email already registered", buttonText: "ok")
+                    self?.showAlert(title: "Не получается зарегистрироваться", message: "Аккаунт с такой почтой уже существует", buttonText: "ok")
                        break
                    case .weakPassword:
-                    self?.showAlert(title: "Cannot register", message: "Weak password: minimal length is 6 characters", buttonText: "ok")
+                    self?.showAlert(title: "Не получается зарегистрироваться", message: "Пароль должен содержать минимум 6 символов", buttonText: "ok")
                                          break
                    case .invalidEmail:
-                    self?.showAlert(title: "Cannot authorize", message: "Invalid email", buttonText: "ok")
+                    self?.showAlert(title: "Не получается войти", message: "Неправильная почта", buttonText: "ok")
                    case .networkError:
-                    self?.showAlert(title: "Cannot authorize", message: "Network error, try again", buttonText: "ok")
+                    self?.showAlert(title: "Не получается войти", message: "Ошибка интернета, попробуйте снова", buttonText: "ok")
                        
                    default:
-                    self?.showAlert(title: "Cannot authorize", message: "Internal error, try again", buttonText: "ok")
+                    self?.showAlert(title: "Не получается войти", message: "Внутренняя ошибка, попробуйте снова", buttonText: "ok")
                        break
                    }
                 }
@@ -230,22 +230,14 @@ class LoginViewController: UIViewController {
             }
         })
     }
-//
-//    let uid: String
-//    let email: String
-//    let username: String
-//    let refCode: String
-//    let diamondCurrency: Int
-//    let ticketCurrency: Int
-    
     
     @IBAction func resetPasswordTapped(sender: UIButton) {
         
-        let alert = UIAlertController(title: "Reset password", message: "Please, enter your email", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Сбросить пароль", message: "Пожалуйста, введите вашу почту", preferredStyle: .alert)
         
         alert.addTextField(configurationHandler: nil)
         
-        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler:nil))
+        alert.addAction(UIAlertAction(title: "Отмена", style: UIAlertAction.Style.cancel, handler:nil))
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: { (UIAlertAction)in
             if let email = alert.textFields?.first?.text {
                 self.resetPassword(forEmail: email.trimmingCharacters(in: .whitespacesAndNewlines))

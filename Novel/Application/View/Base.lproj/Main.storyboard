@@ -303,43 +303,69 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="73" id="xiz-7L-fpS">
-                                        <rect key="frame" x="0.0" y="202" width="414" height="73"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="116" id="xiz-7L-fpS">
+                                        <rect key="frame" x="0.0" y="202" width="414" height="116"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="xiz-7L-fpS" id="izY-un-EGd">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="73"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="116"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="CIc-km-IAO">
-                                                    <rect key="frame" x="0.0" y="6" width="414" height="61"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="CIc-km-IAO">
+                                                    <rect key="frame" x="0.0" y="2.5" width="414" height="111.5"/>
                                                     <subviews>
-                                                        <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" text="IU3Un*nai(wsf29wq" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n7T-KQ-rKl">
-                                                            <rect key="frame" x="0.0" y="0.0" width="414" height="38.5"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Реферальный код" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9ee-Ak-smT">
+                                                            <rect key="frame" x="0.0" y="0.0" width="414" height="18"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" text="KekxCaZ9JmPru52WJcqkRLq49RV2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n7T-KQ-rKl" customClass="CopyableUILabel" customModule="Novel" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="30" width="414" height="19.5"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                             <color key="textColor" red="0.1647058824" green="0.37647058820000001" blue="0.89411764709999997" alpha="1" colorSpace="custom" customColorSpace="deviceRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Реферальный код" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9ee-Ak-smT">
-                                                            <rect key="frame" x="0.0" y="40.5" width="414" height="20.5"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="em9-PZ-O57">
+                                                            <rect key="frame" x="0.0" y="61.5" width="414" height="50"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="50" id="0ir-pa-elj"/>
+                                                            </constraints>
+                                                        </imageView>
                                                     </subviews>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="61" id="5dR-io-u6U"/>
-                                                    </constraints>
                                                 </stackView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aps-NC-lyd" customClass="RoundButton" customModule="Novel" customModuleProvider="target">
+                                                    <rect key="frame" x="122" y="71.5" width="170" height="35"/>
+                                                    <color key="backgroundColor" red="0.1647058824" green="0.37647058820000001" blue="0.89411764709999997" alpha="1" colorSpace="custom" customColorSpace="deviceRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="170" id="C6K-ov-Kk0"/>
+                                                        <constraint firstAttribute="height" constant="35" id="DAk-RW-AxW"/>
+                                                    </constraints>
+                                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <state key="normal" title="Скопировать" image="square.on.square" catalog="system">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </state>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                            <real key="value" value="9"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="copyButtonTappedWithSender:" destination="qus-ZC-c3o" eventType="touchUpInside" id="TuZ-Kz-xay"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="Aps-NC-lyd" firstAttribute="centerY" secondItem="em9-PZ-O57" secondAttribute="centerY" id="0IX-AL-qLY"/>
                                                 <constraint firstItem="CIc-km-IAO" firstAttribute="width" secondItem="izY-un-EGd" secondAttribute="width" id="DfK-zB-25Z"/>
                                                 <constraint firstItem="CIc-km-IAO" firstAttribute="centerX" secondItem="izY-un-EGd" secondAttribute="centerX" id="HnT-gi-yLD"/>
+                                                <constraint firstItem="Aps-NC-lyd" firstAttribute="centerX" secondItem="em9-PZ-O57" secondAttribute="centerX" id="TYQ-1j-j8B"/>
                                                 <constraint firstItem="CIc-km-IAO" firstAttribute="centerY" secondItem="izY-un-EGd" secondAttribute="centerY" id="duJ-a6-QP8"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="144" id="sdM-om-IMb">
-                                        <rect key="frame" x="0.0" y="275" width="414" height="144"/>
+                                        <rect key="frame" x="0.0" y="318" width="414" height="144"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sdM-om-IMb" id="ycG-05-yav">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="144"/>
@@ -408,7 +434,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="dRm-sI-Pj5">
-                                        <rect key="frame" x="0.0" y="419" width="414" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="462" width="414" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dRm-sI-Pj5" id="fkg-7S-6qM">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
@@ -416,7 +442,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="85" id="UcK-vU-nwU">
-                                        <rect key="frame" x="0.0" y="462.5" width="414" height="85"/>
+                                        <rect key="frame" x="0.0" y="505.5" width="414" height="85"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="UcK-vU-nwU" id="wmy-7U-fsE">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="85"/>
@@ -466,7 +492,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UrP-Jj-tap" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="116" y="925"/>
+            <point key="canvasLocation" x="115.94202898550725" y="924.77678571428567"/>
         </scene>
         <!--Main Screen View Controller-->
         <scene sceneID="yUG-hv-rDq">
@@ -915,7 +941,7 @@
     </inferredMetricsTieBreakers>
     <resources>
         <image name="apple_logo" width="800" height="800"/>
-        <image name="back" width="96" height="96"/>
+        <image name="back" width="48" height="48"/>
         <image name="book" width="50" height="50"/>
         <image name="book" catalog="system" width="128" height="101"/>
         <image name="bulleted_list" width="50" height="50"/>
@@ -925,6 +951,7 @@
         <image name="person-tab" width="50" height="50"/>
         <image name="round" width="256" height="256"/>
         <image name="settings" width="50" height="50"/>
+        <image name="square.on.square" catalog="system" width="128" height="113"/>
         <image name="username" width="256" height="256"/>
         <image name="Снимок экрана 2020-07-14 в 12.43.34" width="233" height="331"/>
     </resources>
