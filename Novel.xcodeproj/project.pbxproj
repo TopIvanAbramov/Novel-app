@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C1F1D9724C193550088711B /* RecomendationsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C1F1D9624C193550088711B /* RecomendationsCollectionViewCell.swift */; };
 		2C2C05E524C03F3100B7FCF8 /* CopyableUILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2C05E424C03F3100B7FCF8 /* CopyableUILabel.swift */; };
 		2C2C743824BAEAAD001763EC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2C743724BAEAAD001763EC /* LoginViewController.swift */; };
 		2C31752E24BC640900AD5907 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C31752D24BC640900AD5907 /* History.swift */; };
@@ -38,6 +39,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2C1F1D9624C193550088711B /* RecomendationsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecomendationsCollectionViewCell.swift; sourceTree = "<group>"; };
 		2C2C05E424C03F3100B7FCF8 /* CopyableUILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyableUILabel.swift; sourceTree = "<group>"; };
 		2C2C743724BAEAAD001763EC /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		2C31752D24BC640900AD5907 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 			children = (
 				2C31752F24BC66A700AD5907 /* HistoryListCollectionViewController.swift */,
 				2C31753124BC685200AD5907 /* HistoryCollectionViewCell.swift */,
+				2C1F1D9624C193550088711B /* RecomendationsCollectionViewCell.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -547,6 +550,7 @@
 				2C31753024BC66A700AD5907 /* HistoryListCollectionViewController.swift in Sources */,
 				2C47400B24BD88B000E4B663 /* SectionView.swift in Sources */,
 				2C473FFF24BCB06E00E4B663 /* SectionHeaderView.swift in Sources */,
+				2C1F1D9724C193550088711B /* RecomendationsCollectionViewCell.swift in Sources */,
 				2C84B8A424BB11C7006D557A /* User.swift in Sources */,
 				2CC3FD5524BA4B22008A604F /* ChooseAuthorizationViewController.swift in Sources */,
 				2C4143D024C069FD0028924A /* Bonuses.swift in Sources */,

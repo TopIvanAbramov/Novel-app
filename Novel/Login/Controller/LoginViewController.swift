@@ -102,29 +102,42 @@ class LoginViewController: UIViewController {
     
     @objc func keyboardWillShow(_ notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-//            let keyboardRectangle = keyboardFrame.cgRectValue
             
-//            let keyboardHeight = keyboardRectangle.height
+            let keyboardRectangle = keyboardFrame.cgRectValue
             
-//            print("Height: \(keyboardHeight)")
+            let keyboardHeight = keyboardRectangle.height
+            
+            print("Height: \(keyboardHeight) Minus distance: \((sendButton.frame.size.height + sendButton.frame.origin.y))")
             
             guard oldFooterHeight == 0 else { return }
             
 //            guard keyboardHeight != 0 else { return }
             
             var constant = CGFloat(0)
-            
+
             if authorizationState == .singIn {
-                constant = CGFloat(75.0)
+                constant = CGFloat(110) //CGFloat(75.0)
+            } else {
+                constant = CGFloat(57)
             }
+            
+//          227 and 69
+            
+//           50
             
             oldCornerRadius = footerView.layer.cornerRadius
             footerView.layer.cornerRadius =  0
             
             oldFooterHeight = footerHeight.constant
-            footerHeight.constant = footerHeight.constant + abs(footerView.frame.size.height - (sendButton.frame.size.height + sendButton.frame.origin.y))
+            footerHeight.constant = footerHeight.constant + abs(keyboardHeight - constant)//abs(UIScreen.main.bounds.height - (sendButton.frame.origin.y + sendButton.frame.size.height)))
+//            abs(sendButton.frame.size.height) +
+//            sendButton.frame.origin.y
             
-            footerHeight.constant = footerHeight.constant - constant
+//            footerView.frame.origin.y = -=
+//            oldFooterHeight = footerHeight.constant
+//            footerHeight.constant = footerHeight.constant + abs(footerView.frame.size.height - (sendButton.frame.size.height + sendButton.frame.origin.y))
+//
+//            footerHeight.constant = footerHeight.constant - constant
             
             UIView.animate(withDuration: 2, animations: {
                 self.view.layoutIfNeeded()

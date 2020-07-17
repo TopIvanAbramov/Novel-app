@@ -33,6 +33,8 @@ class CategoryListViewController: UIViewController {
         collectionView.collectionViewLayout = compositionalLayout
         
         self.addreferalBonus()
+        
+//        startAutomaticScrolling()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -42,14 +44,28 @@ class CategoryListViewController: UIViewController {
         
         self.ref.observe(.value, with: {[weak self] (snapshot) in
             var _categories = Array<Category>()
+            var recomendations = Array<Category>()
+            
             for item in snapshot.children {
                 let category = Category(snapshot: item as! DataSnapshot)
-                _categories.append(category)
+                
+                if category.name == "Рекомендации" {
+                    recomendations.append(category)
+                } else {
+                      _categories.append(category)
+                }
             }
             
-            self?.categories = _categories
+         
+            self?.categories = recomendations
+            
+            self?.categories += _categories
+           
+            
             self?.collectionView.reloadData()
         })
+        
+//        startAutomaticScrolling()
     }
     
     
@@ -64,7 +80,7 @@ class CategoryListViewController: UIViewController {
                     userRef.child("\(user.uid)/ticketCurrency").setValue((user.ticketCurrency) + bonuses.referalBonuse)
                     userRef.child("\(user.uid)/didAddreferalBonus").setValue(true)
                     
-                    userRef.child("\(user.refCode)").observeSingleEvent(of: .value, with: {[weak self] (snapshot) in
+                    userRef.child("\(user.refCode)").observeSingleEvent(of: .value, with: {(snapshot) in
                         if snapshot.exists() {
                             let user = AppUser(snapshot: snapshot)
                             userRef.child("\(user.refCode)/ticketCurrency").setValue((user.ticketCurrency) + bonuses.referalBonuse)
@@ -75,6 +91,41 @@ class CategoryListViewController: UIViewController {
             }
         })
     }
+    
+    func startAutomaticScrolling() {
+
+        _ =  Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.scrollAutomatically), userInfo: nil, repeats: true)
+    }
+
+
+    @objc func scrollAutomatically(_ timer1: Timer) {
+
+        if let coll  = collectionView {
+            for cell in coll.visibleCells.filter({ (cell) -> Bool in
+                if coll.indexPath(for: cell)?.section == 1 {
+                    return true
+                } else {
+                    return false
+                }
+            }) {
+                let indexPath: IndexPath? = coll.indexPath(for: cell)
+                
+                print("Timer: \(indexPath?.row) \(indexPath?.section)")
+                
+                if ((indexPath?.row)! < 10 - 1){
+                    let indexPath1 = IndexPath.init(row: (indexPath?.row)! + 1, section: (indexPath?.section)!)
+
+                    coll.scrollToItem(at: indexPath1, at: .right, animated: true)
+                    
+                } else {
+                    let indexPath1 = IndexPath.init(row: 0, section: (indexPath?.section)!)
+                    coll.scrollToItem(at: indexPath1, at: .left, animated: true)
+                }
+
+            }
+        }
+    }
+    
     
     func printCategories() {
         for category in categories {
@@ -106,7 +157,13 @@ class CategoryListViewController: UIViewController {
     private lazy var compositionalLayout: UICollectionViewCompositionalLayout = {
         let layout = UICollectionViewCompositionalLayout { [weak self]
             (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+            
+            switch sectionIndex {
+            case 0:
+                return self?.setupRecomendationListSection()
+            default:
                 return self?.setupCategoryListSection()
+            }
         }
         layout.register(BackgroundDecorationView.self,
         forDecorationViewOfKind: "background")
@@ -127,8 +184,45 @@ class CategoryListViewController: UIViewController {
 
         // Group
         let group = NSCollectionLayoutGroup.vertical(
-            layoutSize: NSCollectionLayoutSize(widthDimension: .absolute(120),
-                                               heightDimension: .absolute(150)),
+            layoutSize: NSCollectionLayoutSize(widthDimension: .absolute(140),
+                                               heightDimension: .absolute(210)),
+            subitem: item,
+            count: 1)
+
+        // Section
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 16.0,
+                                                        leading: 0.0,
+                                                        bottom: 16.0,
+                                                        trailing: 0.0)
+
+        // 2. Magic: Horizontal Scroll.
+        section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
+
+        // 3. Creating header layout
+        section.boundarySupplementaryItems = [headerViewSupplementaryItem]
+        
+        let backgroundItem = NSCollectionLayoutDecorationItem.background(elementKind: "background")
+        section.decorationItems = [backgroundItem]
+        
+        return section
+    }
+    
+    func setupRecomendationListSection() -> NSCollectionLayoutSection {
+        // 1. Creating section layout. Item -> Group -> Section
+        // Item
+        let item = NSCollectionLayoutItem(
+            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                               heightDimension: .fractionalHeight(1.0)))
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0.0,
+                                                     leading: 8.0,
+                                                     bottom: 0.0,
+                                                     trailing: 8.0)
+
+        // Group
+        let group = NSCollectionLayoutGroup.vertical(
+            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8),
+                                               heightDimension: .fractionalWidth(0.5)),
             subitem: item,
             count: 1)
 
@@ -211,8 +305,10 @@ extension CategoryListViewController: UICollectionViewDataSource, UICollectionVi
           else {
             fatalError("Invalid view type")
         }
-        
+            
         headerView.label.text = categories[indexPath.section].name
+        
+        headerView.backgroundColor = #colorLiteral(red: 1, green: 0.9127054811, blue: 0, alpha: 0.5535875803)
         
         return headerView
       default:
@@ -222,14 +318,57 @@ extension CategoryListViewController: UICollectionViewDataSource, UICollectionVi
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "history", for: indexPath) as! HistoryCollectionViewCell
+        
+        switch indexPath.section {
+            case 0:
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recomendations", for: indexPath) as! RecomendationsCollectionViewCell
 
-        cell.backgroundColor = .white
-        cell.historyName.text = "История"
+                cell.backgroundColor = .clear
+                cell.layer.masksToBounds = false
+                cell.layer.shadowOpacity = 0.23
+                cell.layer.shadowRadius = 4
+                cell.layer.shadowOffset = CGSize(width: 0, height: 0)
+                cell.layer.shadowColor = UIColor.black.cgColor
+
+                // add corner radius on `contentView`
+                cell.contentView.backgroundColor = .white
+                cell.contentView.layer.cornerRadius = 8
+                
+                
+                cell.textLabel.text = "Vintage Tales Norman Clougi"
+                cell.footerImageView.backgroundColor = #colorLiteral(red: 0.8011650443, green: 0.8013004661, blue: 0.8011472821, alpha: 0.5802489131)
+                cell.backgroundImage.image = UIImage(named: "recomendations")
         
-        cell.historyImage.image = UIImage(named: "book-cover")
-        
-        return cell
+                return cell
+            
+            
+        default:
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "history", for: indexPath) as! HistoryCollectionViewCell
+
+                cell.backgroundColor = .clear
+                cell.layer.masksToBounds = false
+                cell.layer.shadowOpacity = 0.23
+                cell.layer.shadowRadius = 4
+                cell.layer.shadowOffset = CGSize(width: 0, height: 0)
+                cell.layer.shadowColor = UIColor.black.cgColor
+
+                // add corner radius on `contentView`
+                cell.contentView.backgroundColor = .white
+                cell.contentView.layer.cornerRadius = 8
+                
+                
+                cell.historyName.text = "Vintage Tales Norman Clougi"
+                
+                cell.historyImage.image = UIImage(named: "book-cover")
+            
+                return cell
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        cell.contentView.layer.masksToBounds = true
+        let radius = cell.contentView.layer.cornerRadius
+        cell.layer.shadowPath = UIBezierPath(roundedRect: cell.bounds, cornerRadius: radius).cgPath
     }
 }
 
