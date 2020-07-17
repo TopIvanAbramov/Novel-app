@@ -110,7 +110,7 @@ class CategoryListViewController: UIViewController {
             }) {
                 let indexPath: IndexPath? = coll.indexPath(for: cell)
                 
-                print("Timer: \(indexPath?.row) \(indexPath?.section)")
+//                print("Timer: \(indexPath?.row) \(indexPath?.section)")
                 
                 if ((indexPath?.row)! < 10 - 1){
                     let indexPath1 = IndexPath.init(row: (indexPath?.row)! + 1, section: (indexPath?.section)!)
@@ -192,9 +192,9 @@ class CategoryListViewController: UIViewController {
         // Section
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 16.0,
-                                                        leading: 0.0,
+                                                        leading: 10.0,
                                                         bottom: 16.0,
-                                                        trailing: 0.0)
+                                                        trailing: 50.0)
 
         // 2. Magic: Horizontal Scroll.
         section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
@@ -229,12 +229,12 @@ class CategoryListViewController: UIViewController {
         // Section
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 16.0,
-                                                        leading: 0.0,
+                                                        leading: 10.0,
                                                         bottom: 16.0,
-                                                        trailing: 0.0)
+                                                        trailing: 50.0)
 
         // 2. Magic: Horizontal Scroll.
-        section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
+        section.orthogonalScrollingBehavior = .groupPaging //.continuousGroupLeadingBoundary
 
         // 3. Creating header layout
         section.boundarySupplementaryItems = [headerViewSupplementaryItem]
@@ -257,7 +257,7 @@ class CategoryListViewController: UIViewController {
     
     private lazy var headerViewSupplementaryItem: NSCollectionLayoutBoundarySupplementaryItem = {
         let headerViewItem = NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.06),
                                                heightDimension: .absolute(44)),
             elementKind: UICollectionView.elementKindSectionHeader,
             alignment: .top)
@@ -335,7 +335,7 @@ extension CategoryListViewController: UICollectionViewDataSource, UICollectionVi
                 cell.contentView.layer.cornerRadius = 8
                 
                 
-                cell.textLabel.text = "Vintage Tales Norman Clougi"
+                cell.textLabel.text = "Vintage Tales Norman Clougu"
                 cell.footerImageView.backgroundColor = #colorLiteral(red: 0.8011650443, green: 0.8013004661, blue: 0.8011472821, alpha: 0.5802489131)
                 cell.backgroundImage.image = UIImage(named: "recomendations")
         
@@ -370,6 +370,13 @@ extension CategoryListViewController: UICollectionViewDataSource, UICollectionVi
         let radius = cell.contentView.layer.cornerRadius
         cell.layer.shadowPath = UIBezierPath(roundedRect: cell.bounds, cornerRadius: radius).cgPath
     }
+    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+//
+//        let insets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 100)
+//
+//        return insets
+//    }
 }
 
 extension UIColor {
