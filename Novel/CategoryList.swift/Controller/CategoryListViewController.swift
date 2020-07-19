@@ -17,7 +17,7 @@ class CategoryListViewController: UIViewController {
     var user: AppUser!
     var categories = Array<Category>()
     
-    var currentSection = 0
+    var currentSection = 1
     
     var currentCellsRowNumber: Int = 1
 
@@ -36,6 +36,8 @@ class CategoryListViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.collectionViewLayout = compositionalLayout
+        
+        collectionView.insetsLayoutMarginsFromSafeArea = false
         
         self.addreferalBonus()
         
@@ -106,7 +108,7 @@ class CategoryListViewController: UIViewController {
     }
     
     func scrollSectionCellsAutomatically() {
-        timer =  Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(scrollToCell), userInfo: nil, repeats: true)
+        timer =  Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(scrollToCell), userInfo: nil, repeats: true)
     }
     
     @objc func scrollToCell() {
@@ -188,9 +190,9 @@ class CategoryListViewController: UIViewController {
         // Section
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 16.0,
-                                                        leading: 10.0,
+                                                        leading: 0.0,
                                                         bottom: 16.0,
-                                                        trailing: 50.0)
+                                                        trailing: 0.0)
 
         // 2. Magic: Horizontal Scroll.
         section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
@@ -217,22 +219,22 @@ class CategoryListViewController: UIViewController {
 
         // Group
         let group = NSCollectionLayoutGroup.vertical(
-            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8),
+            layoutSize: NSCollectionLayoutSize(widthDimension:                                                    .fractionalWidth(0.8),
                                                heightDimension: .fractionalWidth(0.5)),
-            subitem: item,
-            count: 1)
+                                                subitem: item,
+                                                count: 1)
 
         // Section
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 16.0,
-                                                        leading: 10.0,
+                                                        leading: 0.0,
                                                         bottom: 16.0,
-                                                        trailing: 50.0)
+                                                        trailing: 0.0)
 
 //        section.offs
         
         // 2. Magic: Horizontal Scroll.
-        section.orthogonalScrollingBehavior = .groupPaging //.continuousGroupLeadingBoundary
+        section.orthogonalScrollingBehavior = .groupPagingCentered
 
         // 3. Creating header layout
         section.boundarySupplementaryItems = [headerViewSupplementaryItem]
@@ -255,7 +257,7 @@ class CategoryListViewController: UIViewController {
     
     private lazy var headerViewSupplementaryItem: NSCollectionLayoutBoundarySupplementaryItem = {
         let headerViewItem = NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.06),
+            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.00),
                                                heightDimension: .absolute(44)),
             elementKind: UICollectionView.elementKindSectionHeader,
             alignment: .top)

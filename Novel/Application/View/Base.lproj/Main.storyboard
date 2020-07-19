@@ -100,21 +100,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="AIv-T7-9E9">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="AIv-T7-9E9">
                                 <rect key="frame" x="0.0" y="88" width="414" height="725"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <viewLayoutGuide key="contentLayoutGuide" id="8Mo-Kh-bty"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="waz-tR-7T8"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" sectionInsetReference="layoutMargins" id="AHg-MT-1mH">
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" sectionInsetReference="safeArea" id="AHg-MT-1mH">
                                     <size key="itemSize" width="141" height="210"/>
                                     <size key="headerReferenceSize" width="50" height="50"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="50" maxY="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" reuseIdentifier="history" id="hWE-eo-CS1" customClass="HistoryCollectionViewCell" customModule="Novel" customModuleProvider="target">
-                                        <rect key="frame" x="112" y="58" width="140" height="210"/>
+                                        <rect key="frame" x="137" y="50" width="140" height="210"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="M5c-mR-Be1">
                                             <rect key="frame" x="0.0" y="0.0" width="140" height="210"/>
@@ -152,7 +151,7 @@
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="recomendations" id="dBD-eB-mAS" customClass="RecomendationsCollectionViewCell" customModule="Novel" customModuleProvider="target">
-                                        <rect key="frame" x="8" y="278" width="356" height="210"/>
+                                        <rect key="frame" x="29" y="270" width="356" height="210"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="5Pj-67-jdJ">
                                             <rect key="frame" x="0.0" y="0.0" width="356" height="210"/>
@@ -193,7 +192,7 @@
                                     </collectionViewCell>
                                 </cells>
                                 <collectionReusableView key="sectionHeaderView" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="sectionHeader" id="f2z-lz-06p" customClass="SectionHeaderView" customModule="Novel" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="8" width="414" height="50"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Жанр" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NL7-DZ-gQB">
@@ -216,6 +215,12 @@
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="AIv-T7-9E9" firstAttribute="leading" secondItem="kH0-7k-YXZ" secondAttribute="leading" id="CxR-MY-SEa"/>
+                            <constraint firstItem="AIv-T7-9E9" firstAttribute="top" secondItem="kH0-7k-YXZ" secondAttribute="top" id="jZ0-rG-QHQ"/>
+                            <constraint firstItem="AIv-T7-9E9" firstAttribute="trailing" secondItem="kH0-7k-YXZ" secondAttribute="trailing" id="ut3-b4-Mfz"/>
+                            <constraint firstItem="kH0-7k-YXZ" firstAttribute="bottom" secondItem="AIv-T7-9E9" secondAttribute="bottom" id="zet-x1-EF0"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="kH0-7k-YXZ"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="home" selectedImage="home" id="G5j-OM-z4j"/>
@@ -963,14 +968,14 @@
     <resources>
         <image name="apple_logo" width="800" height="800"/>
         <image name="back" width="48" height="48"/>
-        <image name="book" catalog="system" width="128" height="101"/>
         <image name="book" width="50" height="50"/>
+        <image name="book" catalog="system" width="128" height="101"/>
         <image name="book-cover" width="218.5" height="348.5"/>
         <image name="bulleted_list" width="50" height="50"/>
         <image name="google_logo" width="1136" height="852"/>
-        <image name="home" width="50" height="50"/>
-        <image name="person-tab" width="50" height="50"/>
-        <image name="settings" width="50" height="50"/>
+        <image name="home" width="37.5" height="37.5"/>
+        <image name="person-tab" width="37.5" height="37.5"/>
+        <image name="settings" width="33.333332061767578" height="33.333332061767578"/>
         <image name="square.on.square" catalog="system" width="128" height="113"/>
         <image name="username" width="256" height="256"/>
         <image name="Снимок экрана 2020-07-14 в 12.43.34" width="233" height="331"/>
