@@ -17,6 +17,7 @@ class CategoryListViewController: UIViewController {
     var user: AppUser!
     var categories = Array<Category>()
     
+     var currentCellsRowNumber: Int = 1
 
 
 //    MARK: - ViewLifeCycle
@@ -34,6 +35,10 @@ class CategoryListViewController: UIViewController {
         
         self.addreferalBonus()
         
+//        let hex = (#colorLiteral(red: 0.1779010296, green: 0.9309487939, blue: 0.1557571292, alpha: 0.3170117547)).toHex(alpha: true)
+//        print(hex)
+//        UIColor.init(hex: hex!)
+        
 //        startAutomaticScrolling()
     }
     
@@ -42,30 +47,35 @@ class CategoryListViewController: UIViewController {
 
         tabBarController?.title = "Истории"
         
-        self.ref.observe(.value, with: {[weak self] (snapshot) in
-            var _categories = Array<Category>()
-            var recomendations = Array<Category>()
-            
-            for item in snapshot.children {
-                let category = Category(snapshot: item as! DataSnapshot)
-                
-                if category.name == "Рекомендации" {
-                    recomendations.append(category)
-                } else {
-                      _categories.append(category)
-                }
-            }
-            
-         
-            self?.categories = recomendations
-            
-            self?.categories += _categories
-           
-            
-            self?.collectionView.reloadData()
-        })
+        DispatchQueue.global(qos: .background).async {
+            self.ref.observe(.value, with: {[weak self] (snapshot) in
+                       var _categories = Array<Category>()
+                       var recomendations = Array<Category>()
+                       
+                       for item in snapshot.children {
+                           let category = Category(snapshot: item as! DataSnapshot)
+                           
+                           if category.name == "Рекомендации" {
+                               recomendations.append(category)
+                           } else {
+                                 _categories.append(category)
+                           }
+                       }
+                       
+                    
+                       self?.categories = recomendations
+                       
+                       self?.categories += _categories
+                      
+                       DispatchQueue.main.async {
+                           // reload your collection view here:
+                            self?.collectionView.reloadData()
+                       }
+                   })
+        }
+       
         
-//        startAutomaticScrolling()
+        scrollSectionCellsAutomatically()
     }
     
     
@@ -92,37 +102,20 @@ class CategoryListViewController: UIViewController {
         })
     }
     
-    func startAutomaticScrolling() {
-
-        _ =  Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.scrollAutomatically), userInfo: nil, repeats: true)
+    func scrollSectionCellsAutomatically() {
+        _ =  Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(scrollToCell), userInfo: nil, repeats: true)
     }
+    
+    @objc func scrollToCell() {
+        let indexPath: IndexPath = IndexPath(row: currentCellsRowNumber, section: 0)
+        
+        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        
+        if ((currentCellsRowNumber) < 10 - 1) {
+            currentCellsRowNumber += 1
 
-
-    @objc func scrollAutomatically(_ timer1: Timer) {
-
-        if let coll  = collectionView {
-            for cell in coll.visibleCells.filter({ (cell) -> Bool in
-                if coll.indexPath(for: cell)?.section == 1 {
-                    return true
-                } else {
-                    return false
-                }
-            }) {
-                let indexPath: IndexPath? = coll.indexPath(for: cell)
-                
-//                print("Timer: \(indexPath?.row) \(indexPath?.section)")
-                
-                if ((indexPath?.row)! < 10 - 1){
-                    let indexPath1 = IndexPath.init(row: (indexPath?.row)! + 1, section: (indexPath?.section)!)
-
-                    coll.scrollToItem(at: indexPath1, at: .right, animated: true)
-                    
-                } else {
-                    let indexPath1 = IndexPath.init(row: 0, section: (indexPath?.section)!)
-                    coll.scrollToItem(at: indexPath1, at: .left, animated: true)
-                }
-
-            }
+        } else {
+           currentCellsRowNumber = 0
         }
     }
     
@@ -233,6 +226,8 @@ class CategoryListViewController: UIViewController {
                                                         bottom: 16.0,
                                                         trailing: 50.0)
 
+//        section.offs
+        
         // 2. Magic: Horizontal Scroll.
         section.orthogonalScrollingBehavior = .groupPaging //.continuousGroupLeadingBoundary
 
@@ -357,7 +352,7 @@ extension CategoryListViewController: UICollectionViewDataSource, UICollectionVi
                 cell.contentView.layer.cornerRadius = 8
                 
                 
-                cell.historyName.text = "Vintage Tales Norman Clougi"
+                cell.historyName.text = "\(indexPath.row) \(indexPath.section)" //"Vintage Tales Norman Clougi"
                 
                 cell.historyImage.image = UIImage(named: "book-cover")
             
@@ -387,7 +382,7 @@ extension UIColor {
         var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
         hexSanitized = hexSanitized.replacingOccurrences(of: "#", with: "")
 
-        var rgb: UInt32 = 0
+        var rgb: UInt64 = 0
 
         var r: CGFloat = 0.0
         var g: CGFloat = 0.0
@@ -395,25 +390,30 @@ extension UIColor {
         var a: CGFloat = 1.0
 
         let length = hexSanitized.count
-
-        guard Scanner(string: hexSanitized).scanHexInt32(&rgb) else { return nil }
+        
+        guard Scanner(string: hexSanitized).scanHexInt64(&rgb) else { return nil }
 
         if length == 6 {
             r = CGFloat((rgb & 0xFF0000) >> 16) / 255.0
             g = CGFloat((rgb & 0x00FF00) >> 8) / 255.0
             b = CGFloat(rgb & 0x0000FF) / 255.0
 
+            print("\n\nWithout alpha \n\n")
+            
         } else if length == 8 {
             r = CGFloat((rgb & 0xFF000000) >> 24) / 255.0
             g = CGFloat((rgb & 0x00FF0000) >> 16) / 255.0
             b = CGFloat((rgb & 0x0000FF00) >> 8) / 255.0
             a = CGFloat(rgb & 0x000000FF) / 255.0
+            
+            print("\n\nWith alpha: \(a)\n\n")
 
         } else {
             return nil
         }
 
-        self.init(red: r, green: g, blue: b, alpha: a)
+//        let color = UIColor(red: r, green: <#T##CGFloat#>, blue: <#T##CGFloat#>, alpha: <#T##CGFloat#>)
+        self.init(red: r, green: g, blue: b, alpha: a) //.withAlphaComponent(a)
     }
 
     // MARK: - Computed Properties
@@ -436,6 +436,8 @@ extension UIColor {
 
         if components.count >= 4 {
             a = Float(components[3])
+            
+            print("ALpha: \(a)")
         }
 
         if alpha {

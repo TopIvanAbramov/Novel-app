@@ -86,6 +86,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2C1F1D9824C2F25A0088711B /* Bonuses */ = {
+			isa = PBXGroup;
+			children = (
+				2C1F1D9B24C2F2750088711B /* Model */,
+				2C1F1D9A24C2F2700088711B /* View */,
+				2C1F1D9924C2F2650088711B /* Controller */,
+			);
+			path = Bonuses;
+			sourceTree = "<group>";
+		};
+		2C1F1D9924C2F2650088711B /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		2C1F1D9A24C2F2700088711B /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		2C1F1D9B24C2F2750088711B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		2C31752924BC63D800AD5907 /* HistoryList */ = {
 			isa = PBXGroup;
 			children = (
@@ -284,6 +315,7 @@
 		2CE088F224BA47670063D8F8 /* Novel */ = {
 			isa = PBXGroup;
 			children = (
+				2C1F1D9824C2F25A0088711B /* Bonuses */,
 				2CE0890724BA478C0063D8F8 /* Application */,
 				2CC6C28E24BF254000DBD220 /* Story */,
 				2C47400024BCCB6900E4B663 /* Settings */,

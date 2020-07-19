@@ -963,8 +963,8 @@
     <resources>
         <image name="apple_logo" width="800" height="800"/>
         <image name="back" width="48" height="48"/>
-        <image name="book" width="50" height="50"/>
         <image name="book" catalog="system" width="128" height="101"/>
+        <image name="book" width="50" height="50"/>
         <image name="book-cover" width="218.5" height="348.5"/>
         <image name="bulleted_list" width="50" height="50"/>
         <image name="google_logo" width="1136" height="852"/>
