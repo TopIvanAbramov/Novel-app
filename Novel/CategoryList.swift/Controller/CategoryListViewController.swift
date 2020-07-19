@@ -17,9 +17,13 @@ class CategoryListViewController: UIViewController {
     var user: AppUser!
     var categories = Array<Category>()
     
-     var currentCellsRowNumber: Int = 1
+    var currentSection = 0
+    
+    var currentCellsRowNumber: Int = 1
 
 
+    var timer: Timer?
+    
 //    MARK: - ViewLifeCycle
     
     override func viewDidLoad() {
@@ -39,7 +43,6 @@ class CategoryListViewController: UIViewController {
 //        print(hex)
 //        UIColor.init(hex: hex!)
         
-//        startAutomaticScrolling()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -71,7 +74,7 @@ class CategoryListViewController: UIViewController {
                            // reload your collection view here:
                             self?.collectionView.reloadData()
                        }
-                   })
+                })
         }
        
         
@@ -103,7 +106,7 @@ class CategoryListViewController: UIViewController {
     }
     
     func scrollSectionCellsAutomatically() {
-        _ =  Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(scrollToCell), userInfo: nil, repeats: true)
+        timer =  Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(scrollToCell), userInfo: nil, repeats: true)
     }
     
     @objc func scrollToCell() {
@@ -364,14 +367,36 @@ extension CategoryListViewController: UICollectionViewDataSource, UICollectionVi
         cell.contentView.layer.masksToBounds = true
         let radius = cell.contentView.layer.cornerRadius
         cell.layer.shadowPath = UIBezierPath(roundedRect: cell.bounds, cornerRadius: radius).cgPath
+        
+        if currentSection != 0 {
+            
+            if indexPath.section == 0  {
+                currentCellsRowNumber = indexPath.row + 1
+                
+                currentSection = 0
+                
+                scrollSectionCellsAutomatically()
+            } else {
+                timer?.invalidate()
+            }
+
+        } else {
+            
+            for cell in collectionView.visibleCells {
+                
+                if collectionView.indexPath(for: cell)?.section == 0 {
+                    print("\n\nScroll that section 0 visible\n\n")
+                    return
+                }
+            }
+            
+            print("\n\nGo out of section 0\n\n")
+            
+            currentSection = indexPath.section
+            
+            timer?.invalidate()
+        }
     }
-    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-//
-//        let insets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 100)
-//
-//        return insets
-//    }
 }
 
 extension UIColor {
