@@ -476,11 +476,11 @@ extension CategoryListViewController: UICollectionViewDataSource, UICollectionVi
                 cell.layer.shadowColor = UIColor.black.cgColor
 
                 // add corner radius on `contentView`
-                cell.contentView.backgroundColor =  #colorLiteral(red: 1, green: 0.9127054811, blue: 0, alpha: 1) //.white
+                cell.contentView.backgroundColor =  .white //#colorLiteral(red: 1, green: 0.9127054811, blue: 0, alpha: 1) //.white
                 cell.contentView.layer.cornerRadius = 8
                 
                 
-                cell.historyName.text = "\(indexPath.row) \(indexPath.section)" //"Vintage Tales Norman Clougi"
+                cell.historyName.text = "Vintage Tales Norman Clougi"
                 
                 cell.historyImage.image = UIImage(named: "book-cover")
             
