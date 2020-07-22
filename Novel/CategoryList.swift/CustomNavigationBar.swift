@@ -47,7 +47,6 @@ protocol NavigationBarDelegate: class {
     
             contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     
-    
             leffButton.tintColor = .yellow
             rightButton.tintColor = .yellow
     }

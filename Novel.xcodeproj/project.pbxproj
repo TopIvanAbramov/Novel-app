@@ -24,6 +24,8 @@
 		2C47400524BCCBA300E4B663 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C47400424BCCBA300E4B663 /* SettingsViewController.swift */; };
 		2C47400B24BD88B000E4B663 /* SectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C47400A24BD88B000E4B663 /* SectionView.swift */; };
 		2C47400F24BDA3B000E4B663 /* BackgroundDecorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C47400E24BDA3AF00E4B663 /* BackgroundDecorationView.swift */; };
+		2C71000024C8562B009D7D83 /* BonusUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C71FFFF24C8562B009D7D83 /* BonusUIView.xib */; };
+		2C71FFFE24C85616009D7D83 /* BonusUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C71FFFD24C85616009D7D83 /* BonusUIView.swift */; };
 		2C84B8A424BB11C7006D557A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C84B8A324BB11C7006D557A /* User.swift */; };
 		2C9FE23124C5C0D000E47DEE /* CustomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9FE23024C5C0D000E47DEE /* CustomNavigationBar.swift */; };
 		2C9FE23324C5C0E000E47DEE /* CustomNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C9FE23224C5C0E000E47DEE /* CustomNavigationBar.xib */; };
@@ -59,6 +61,8 @@
 		2C47400424BCCBA300E4B663 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		2C47400A24BD88B000E4B663 /* SectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionView.swift; sourceTree = "<group>"; };
 		2C47400E24BDA3AF00E4B663 /* BackgroundDecorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundDecorationView.swift; sourceTree = "<group>"; };
+		2C71FFFD24C85616009D7D83 /* BonusUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BonusUIView.swift; sourceTree = "<group>"; };
+		2C71FFFF24C8562B009D7D83 /* BonusUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BonusUIView.xib; sourceTree = "<group>"; };
 		2C84B8A324BB11C7006D557A /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		2C9FE23024C5C0D000E47DEE /* CustomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomNavigationBar.swift; path = Novel/CategoryList.swift/CustomNavigationBar.swift; sourceTree = SOURCE_ROOT; };
 		2C9FE23224C5C0E000E47DEE /* CustomNavigationBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomNavigationBar.xib; sourceTree = "<group>"; };
@@ -112,6 +116,8 @@
 		2C1F1D9A24C2F2700088711B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				2C71FFFD24C85616009D7D83 /* BonusUIView.swift */,
+				2C71FFFF24C8562B009D7D83 /* BonusUIView.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -503,6 +509,7 @@
 				2C9FE23324C5C0E000E47DEE /* CustomNavigationBar.xib in Resources */,
 				2CC3FD5824BA4DF9008A604F /* GoogleService-Info.plist in Resources */,
 				2CE088FD24BA47680063D8F8 /* Assets.xcassets in Resources */,
+				2C71000024C8562B009D7D83 /* BonusUIView.xib in Resources */,
 				2CE088FB24BA47670063D8F8 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -573,6 +580,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C71FFFE24C85616009D7D83 /* BonusUIView.swift in Sources */,
 				2CC6C29324BF257800DBD220 /* StoryViewController.swift in Sources */,
 				2C4143CA24C063FE0028924A /* Constants.swift in Sources */,
 				2C2C05E524C03F3100B7FCF8 /* CopyableUILabel.swift in Sources */,

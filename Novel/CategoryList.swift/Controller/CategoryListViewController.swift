@@ -16,7 +16,8 @@ enum TypeOfReward {
     case None
 }
 
-class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRewardedAdDelegate {
+class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRewardedAdDelegate, BonusUIViewDelegate {
+    
     
     func leftButtonTapped() {
       // Ad successfully loaded.
@@ -43,9 +44,10 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
     var ref: DatabaseReference!
     var user: AppUser!
     var categories = Array<Category>()
+    var bonusView: BonusUIView?
+    var bonusTappedCompetion = {}
     
-    var currentSection = 1
-    
+    var blurEffect: UIBlurEffect?
     var currentCellsRowNumber: Int = 1
 
 
@@ -68,6 +70,7 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
         
         customNavigationBar.delegate = self
         
+        
         collectionView.insetsLayoutMarginsFromSafeArea = false
         
 //        addreferalBonus()
@@ -76,6 +79,10 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+//        prsentBonusView(withTitle: "Вы получили бонус", andSubtitle: "Ежедневый бонус - 5 энергий", completion: {
+//            print("\n\n Get bonus tapped\n\n")
+//        })
+        
         tabBarController?.title = "Истории"
         
         rewardedAdvideo = createAndLoadRewardedAd()
@@ -131,6 +138,8 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
     }
     
     
+//    MARK:- BonusView
+    
     func addreferalBonus() {
         let userRef = Database.database().reference(withPath: "users")
         
@@ -139,13 +148,15 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
             if !(user.didAddreferalBonus) {
                 _ = getBonuses(completion: { bonuses in
                     
-                    userRef.child("\(user.uid)/ticketCurrency").setValue((user.energyCurrency) + bonuses.referalBonuse)
-                    userRef.child("\(user.uid)/didAddreferalBonus").setValue(true)
+                    self.prsentBonusView(withTitle: "Вы получили бонус!", andSubtitle: "Бонус за регистрацию по реферальной ссылке \(bonuses.referalBonuse) энергии") {
+                        userRef.child("\(user.uid)/energyCurrency").setValue((user.energyCurrency) + bonuses.referalBonuse)
+                        userRef.child("\(user.uid)/didAddreferalBonus").setValue(true)
+                    }
                     
                     userRef.child("\(user.refCode)").observeSingleEvent(of: .value, with: {(snapshot) in
                         if snapshot.exists() {
                             let user = AppUser(snapshot: snapshot)
-                            userRef.child("\(user.refCode)/ticketCurrency").setValue((user.energyCurrency) + bonuses.referalBonuse)
+                            userRef.child("\(user.refCode)/energyCurrency").setValue((user.energyCurrency) + bonuses.referalBonuse)
                         }
                     })
 
@@ -153,6 +164,36 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
             }
         })
     }
+    
+    func prsentBonusView(withTitle title: String, andSubtitle subtitle: String, completion: @escaping () -> ()) {
+        let uiscreenBounds = UIScreen.main.bounds
+        let rect = CGRect(x: 0, y: 0, width: uiscreenBounds.width * 0.8, height: uiscreenBounds.width * 0.8 * 50 / 35)
+        
+        bonusView = BonusUIView(frame: rect)
+        bonusView?.center = self.view.center
+        bonusView?.delegate = self
+        bonusView?.setTitle(withText: title)
+        bonusView?.setSubtitle(withText: subtitle)
+        
+        bonusTappedCompetion = completion
+        
+        blurEffect = UIBlurEffect(style: UIBlurEffect.Style.extraLight)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = self.view.bounds
+        blurEffectView.tag = 100
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.view.addSubview(blurEffectView)
+        
+        self.view.addSubview(bonusView!)
+    }
+    
+    func bonusButtonTapped() {
+        bonusTappedCompetion()
+        bonusView?.removeFromSuperview()
+        view.viewWithTag(100)?.removeFromSuperview()
+    }
+    
+//    MARK:- Automatic scroll of sections
     
     func scrollSectionCellsAutomatically() {
         timer =  Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(scrollToCell), userInfo: nil, repeats: true)
@@ -224,10 +265,14 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
     func rewardedAd(_ rewardedAd: GADRewardedAd, userDidEarn reward: GADAdReward) {
         switch typeOfReward {
         case .Energy:
-            updateEnergyCurrency(withVAlue: 5)
+            prsentBonusView(withTitle: "Вы получили бонус!", andSubtitle: "Бонус за просмотр рекламы - 5 энергий", completion: {
+                self.updateEnergyCurrency(withVAlue: 5)
+            })
             break
         case .Heart:
-            updateHeartCurrency(withVAlue: 1)
+            prsentBonusView(withTitle: "Вы получили бонус!", andSubtitle: "Бонус за просмотр рекламы - 5 энергий", completion: {
+                self.updateHeartCurrency(withVAlue: 1)
+            })
             break
         default:
             break

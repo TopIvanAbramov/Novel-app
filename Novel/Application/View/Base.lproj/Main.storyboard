@@ -756,7 +756,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wx3-K3-YpD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-954" y="-327"/>
+            <point key="canvasLocation" x="-955.07246376811599" y="-327.45535714285711"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="jo0-ag-pS6">
@@ -982,8 +982,8 @@
     <resources>
         <image name="apple_logo" width="800" height="800"/>
         <image name="back" width="48" height="48"/>
-        <image name="book" catalog="system" width="128" height="101"/>
         <image name="book" width="50" height="50"/>
+        <image name="book" catalog="system" width="128" height="101"/>
         <image name="book-cover" width="218.5" height="348.5"/>
         <image name="bulleted_list" width="50" height="50"/>
         <image name="google_logo" width="1136" height="852"/>
