@@ -475,7 +475,7 @@ extension CategoryListViewController: UICollectionViewDataSource, UICollectionVi
                 cell.layer.shadowOffset = CGSize(width: 0, height: 0)
                 cell.layer.shadowColor = UIColor.black.cgColor
 
-                // add corner radius on `contentView`
+                // add corner radius on 'contentView'
                 cell.contentView.backgroundColor =  .white //#colorLiteral(red: 1, green: 0.9127054811, blue: 0, alpha: 1) //.white
                 cell.contentView.layer.cornerRadius = 8
                 
@@ -492,35 +492,6 @@ extension CategoryListViewController: UICollectionViewDataSource, UICollectionVi
         cell.contentView.layer.masksToBounds = true
         let radius = cell.contentView.layer.cornerRadius
         cell.layer.shadowPath = UIBezierPath(roundedRect: cell.bounds, cornerRadius: radius).cgPath
-        
-//        if currentSection != 0 {
-//
-//            if indexPath.section == 0  {
-//                currentCellsRowNumber = indexPath.row + 1
-//
-//                currentSection = 0
-//
-//                scrollSectionCellsAutomatically()
-//            } else {
-//                timer?.invalidate()
-//            }
-//
-//        } else {
-//
-//            for cell in collectionView.visibleCells {
-//
-//                if collectionView.indexPath(for: cell)?.section == 0 {
-//                    print("\n\nScroll that section 0 visible\n\n")
-//                    return
-//                }
-//            }
-//
-//            print("\n\nGo out of section 0\n\n")
-//
-//            currentSection = indexPath.section
-//
-//            timer?.invalidate()
-//        }
     }
 }
 
@@ -561,9 +532,7 @@ extension UIColor {
         } else {
             return nil
         }
-
-//        let color = UIColor(red: r, green: <#T##CGFloat#>, blue: <#T##CGFloat#>, alpha: <#T##CGFloat#>)
-        self.init(red: r, green: g, blue: b, alpha: a) //.withAlphaComponent(a)
+        self.init(red: r, green: g, blue: b, alpha: a)
     }
 
     // MARK: - Computed Properties

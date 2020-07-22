@@ -39,26 +39,17 @@ protocol NavigationBarDelegate: class {
    
    private func commonInit() {
     if self.subviews.count == 0 {
-             print("\n\nCommon init\n\n")
-            
-                Bundle.main.loadNibNamed("CustomNavigationBar", owner: self, options: nil)
-                addSubview(contentView)
-        //
-                contentView.frame = self.bounds
-                self.contentView.translatesAutoresizingMaskIntoConstraints = true
+            Bundle.main.loadNibNamed("CustomNavigationBar", owner: self, options: nil)
+            addSubview(contentView)
         
-                contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        
-//                leffButton.setTitleColor(.yellow, for: .normal)
-//                leffButton.tintColor = #colorLiteral(red: 0.9686413407, green: 0.9036722779, blue: 0.02564223483, alpha: 1)
-//        
-//                rightButton.tintColor = #colorLiteral(red: 1, green: 0.9127054811, blue: 0, alpha: 1)
-        
-////              Add shadows
-//                buttonsBackground.layer.shadowColor = UIColor.gray.cgColor
-//                buttonsBackground.layer.shadowOpacity = 0.3
-//                buttonsBackground.layer.shadowOffset = CGSize(width: 0, height: 5)
-//                buttonsBackground.layer.shadowRadius = 3
+            contentView.frame = self.bounds
+            self.contentView.translatesAutoresizingMaskIntoConstraints = true
+    
+            contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    
+    
+            leffButton.tintColor = .yellow
+            rightButton.tintColor = .yellow
     }
    
    }
