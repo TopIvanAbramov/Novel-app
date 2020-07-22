@@ -9,5 +9,8 @@
 import UIKit
 
 class SectionHeaderView: UICollectionReusableView {
+    
     @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var backgroundView: UIImageView!
+    
 }

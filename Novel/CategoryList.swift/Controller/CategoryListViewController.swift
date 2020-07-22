@@ -8,10 +8,37 @@
 
 import UIKit
 import Firebase
+import GoogleMobileAds
 
-class CategoryListViewController: UIViewController {
+enum TypeOfReward {
+    case Heart
+    case Energy
+    case None
+}
+
+class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRewardedAdDelegate {
+    
+    func leftButtonTapped() {
+      // Ad successfully loaded.
+      if self.rewardedAdvideo?.isReady == true {
+        self.typeOfReward = .Heart
+        self.rewardedAdvideo?.present(fromRootViewController: self, delegate:self)
+      }
+    }
+    
+    func rightButtonTapped() {
+        // Ad successfully loaded.
+        if self.rewardedAdvideo?.isReady == true {
+            self.typeOfReward = .Energy
+            self.rewardedAdvideo?.present(fromRootViewController: self, delegate:self)
+        }
+    }
+    
     
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    var rewardedAdvideo: GADRewardedAd?
+    var typeOfReward: TypeOfReward?
     
     var ref: DatabaseReference!
     var user: AppUser!
@@ -23,6 +50,8 @@ class CategoryListViewController: UIViewController {
 
 
     var timer: Timer?
+    
+    @IBOutlet weak var customNavigationBar: CustomNavigationBar!
     
 //    MARK: - ViewLifeCycle
     
@@ -37,20 +66,21 @@ class CategoryListViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.collectionViewLayout = compositionalLayout
         
+        customNavigationBar.delegate = self
+        
         collectionView.insetsLayoutMarginsFromSafeArea = false
         
-        self.addreferalBonus()
-        
-//        let hex = (#colorLiteral(red: 0.1779010296, green: 0.9309487939, blue: 0.1557571292, alpha: 0.3170117547)).toHex(alpha: true)
-//        print(hex)
-//        UIColor.init(hex: hex!)
-        
+//        addreferalBonus()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         tabBarController?.title = "Истории"
+        
+        rewardedAdvideo = createAndLoadRewardedAd()
+        
+        startObserveUser()
         
         DispatchQueue.global(qos: .background).async {
             self.ref.observe(.value, with: {[weak self] (snapshot) in
@@ -83,6 +113,23 @@ class CategoryListViewController: UIViewController {
         scrollSectionCellsAutomatically()
     }
     
+    func startObserveUser() {
+        let userRef = Database.database().reference(withPath: "users/\(user.uid)")
+        
+        print("User ref: \(userRef.description()) UID: \(user.uid)")
+        
+        userRef.observe(.value, with: {(snapshot) in
+            if type(of: (snapshot.value  as! [String: AnyObject])) != NSNull.self {
+                self.user = AppUser(snapshot: snapshot)
+                
+                self.customNavigationBar.setHeartCurrency(withValue: self.user.heartCurrency)
+                self.customNavigationBar.setEnergyCurrency(withValue: self.user.energyCurrency)
+                
+                 print("\n\nUpdate user info\n\n")
+            }
+        })
+    }
+    
     
     func addreferalBonus() {
         let userRef = Database.database().reference(withPath: "users")
@@ -92,13 +139,13 @@ class CategoryListViewController: UIViewController {
             if !(user.didAddreferalBonus) {
                 _ = getBonuses(completion: { bonuses in
                     
-                    userRef.child("\(user.uid)/ticketCurrency").setValue((user.ticketCurrency) + bonuses.referalBonuse)
+                    userRef.child("\(user.uid)/ticketCurrency").setValue((user.energyCurrency) + bonuses.referalBonuse)
                     userRef.child("\(user.uid)/didAddreferalBonus").setValue(true)
                     
                     userRef.child("\(user.refCode)").observeSingleEvent(of: .value, with: {(snapshot) in
                         if snapshot.exists() {
                             let user = AppUser(snapshot: snapshot)
-                            userRef.child("\(user.refCode)/ticketCurrency").setValue((user.ticketCurrency) + bonuses.referalBonuse)
+                            userRef.child("\(user.refCode)/ticketCurrency").setValue((user.energyCurrency) + bonuses.referalBonuse)
                         }
                     })
 
@@ -108,10 +155,12 @@ class CategoryListViewController: UIViewController {
     }
     
     func scrollSectionCellsAutomatically() {
-        timer =  Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(scrollToCell), userInfo: nil, repeats: true)
+        timer =  Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(scrollToCell), userInfo: nil, repeats: true)
     }
     
     @objc func scrollToCell() {
+        guard recomendationSectionIsVisible() == true else { return }
+            
         let indexPath: IndexPath = IndexPath(row: currentCellsRowNumber, section: 0)
         
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
@@ -124,6 +173,15 @@ class CategoryListViewController: UIViewController {
         }
     }
     
+    func recomendationSectionIsVisible() -> Bool {
+        for cell in collectionView.visibleCells {
+            if collectionView.indexPath(for: cell)?.section == 0 {
+                return true
+            }
+        }
+        
+        return false
+    }
     
     func printCategories() {
         for category in categories {
@@ -147,6 +205,55 @@ class CategoryListViewController: UIViewController {
     
     func createStories() {
         
+    }
+    
+//   MARK:- Handle internal currency
+    
+    func updateEnergyCurrency(withVAlue value: Int) {
+        let userRef = Database.database().reference(withPath: "users/\(user.uid)")
+        userRef.child("energyCurrency").setValue(user.energyCurrency + value)
+    }
+    
+    func updateHeartCurrency(withVAlue value: Int) {
+        let userRef = Database.database().reference(withPath: "users/\(user.uid)")
+        userRef.child("heartCurrency").setValue(user.heartCurrency + value)
+       }
+    
+//  MARK:- Handle mobile ad video
+    
+    func rewardedAd(_ rewardedAd: GADRewardedAd, userDidEarn reward: GADAdReward) {
+        switch typeOfReward {
+        case .Energy:
+            updateEnergyCurrency(withVAlue: 5)
+            break
+        case .Heart:
+            updateHeartCurrency(withVAlue: 1)
+            break
+        default:
+            break
+        }
+        
+        typeOfReward = .None
+        
+        print("User did earn reward")
+    }
+    
+    func rewardedAdDidDismiss(_ rewardedAd: GADRewardedAd) {
+        rewardedAdvideo = createAndLoadRewardedAd()
+    }
+    
+    func createAndLoadRewardedAd() -> GADRewardedAd? {
+        let newRewardedAd = GADRewardedAd(adUnitID: "ca-app-pub-3940256099942544/1712485313")
+        newRewardedAd.load(GADRequest()) { error in
+        if let error = error {
+          print("Loading failed: \(error)")
+            
+          Notifications().showAlert(title: "Не можем загрузить видео", message: "Возможно, проблема с интернетом, попробуйте снова", buttonText: "Ок", view: self)
+        } else {
+          print("Loading Succeeded")
+        }
+      }
+      return newRewardedAd
     }
     
     
@@ -218,12 +325,20 @@ class CategoryListViewController: UIViewController {
                                                      trailing: 8.0)
 
         // Group
-        let group = NSCollectionLayoutGroup.vertical(
-            layoutSize: NSCollectionLayoutSize(widthDimension:                                                    .fractionalWidth(0.8),
-                                               heightDimension: .fractionalWidth(0.5)),
-                                                subitem: item,
-                                                count: 1)
+//        let group = NSCollectionLayoutGroup.vertical(
+//            layoutSize: NSCollectionLayoutSize(widthDimension:                                                    .fractionalWidth(0.8),
+//                                               heightDimension: .fractionalWidth(0.5)),
+//                                                subitem: item,
+//                                                count: 1)
 
+        let group = NSCollectionLayoutGroup.vertical(
+        layoutSize: NSCollectionLayoutSize(
+                                            widthDimension:  .fractionalWidth(0.8),
+                                            heightDimension: .fractionalWidth(0.5)),
+                                            subitem: item,
+                                            count: 1
+                                            )
+        
         // Section
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 16.0,
@@ -308,7 +423,15 @@ extension CategoryListViewController: UICollectionViewDataSource, UICollectionVi
             
         headerView.label.text = categories[indexPath.section].name
         
-        headerView.backgroundColor = #colorLiteral(red: 1, green: 0.9127054811, blue: 0, alpha: 0.5535875803)
+//        headerView.backgroundColor = #colorLiteral(red: 1, green: 0.9127054811, blue: 0, alpha: 0.5535875803)
+        headerView.backgroundView.backgroundColor = .clear //#colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1) //#colorLiteral(red: 1, green: 0.9127054811, blue: 0, alpha: 0.5535875803)
+        
+        headerView.layer.cornerRadius = 8
+        headerView.clipsToBounds = true
+//        headerView.layer
+//        footerView.layer.cornerRadius = 50
+//        footerView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+//        footerView.clipsToBounds = true
         
         return headerView
       default:
@@ -331,7 +454,7 @@ extension CategoryListViewController: UICollectionViewDataSource, UICollectionVi
                 cell.layer.shadowColor = UIColor.black.cgColor
 
                 // add corner radius on `contentView`
-                cell.contentView.backgroundColor = .white
+                cell.contentView.backgroundColor = .clear //.white
                 cell.contentView.layer.cornerRadius = 8
                 
                 
@@ -353,7 +476,7 @@ extension CategoryListViewController: UICollectionViewDataSource, UICollectionVi
                 cell.layer.shadowColor = UIColor.black.cgColor
 
                 // add corner radius on `contentView`
-                cell.contentView.backgroundColor = .white
+                cell.contentView.backgroundColor =  #colorLiteral(red: 1, green: 0.9127054811, blue: 0, alpha: 1) //.white
                 cell.contentView.layer.cornerRadius = 8
                 
                 
@@ -370,34 +493,34 @@ extension CategoryListViewController: UICollectionViewDataSource, UICollectionVi
         let radius = cell.contentView.layer.cornerRadius
         cell.layer.shadowPath = UIBezierPath(roundedRect: cell.bounds, cornerRadius: radius).cgPath
         
-        if currentSection != 0 {
-            
-            if indexPath.section == 0  {
-                currentCellsRowNumber = indexPath.row + 1
-                
-                currentSection = 0
-                
-                scrollSectionCellsAutomatically()
-            } else {
-                timer?.invalidate()
-            }
-
-        } else {
-            
-            for cell in collectionView.visibleCells {
-                
-                if collectionView.indexPath(for: cell)?.section == 0 {
-                    print("\n\nScroll that section 0 visible\n\n")
-                    return
-                }
-            }
-            
-            print("\n\nGo out of section 0\n\n")
-            
-            currentSection = indexPath.section
-            
-            timer?.invalidate()
-        }
+//        if currentSection != 0 {
+//
+//            if indexPath.section == 0  {
+//                currentCellsRowNumber = indexPath.row + 1
+//
+//                currentSection = 0
+//
+//                scrollSectionCellsAutomatically()
+//            } else {
+//                timer?.invalidate()
+//            }
+//
+//        } else {
+//
+//            for cell in collectionView.visibleCells {
+//
+//                if collectionView.indexPath(for: cell)?.section == 0 {
+//                    print("\n\nScroll that section 0 visible\n\n")
+//                    return
+//                }
+//            }
+//
+//            print("\n\nGo out of section 0\n\n")
+//
+//            currentSection = indexPath.section
+//
+//            timer?.invalidate()
+//        }
     }
 }
 

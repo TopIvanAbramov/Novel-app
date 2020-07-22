@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CustomNavigationBar" customModule="Novel" customModuleProvider="target">
+            <connections>
+                <outlet property="contentView" destination="gQP-C2-YLH" id="gl3-rI-tGF"/>
+                <outlet property="energyCurrency" destination="oTh-xH-wb4" id="yox-OP-XAi"/>
+                <outlet property="heartCurrency" destination="UPv-wu-o0f" id="Xyc-nh-K9m"/>
+                <outlet property="leffButton" destination="bo9-MH-ceJ" id="8l5-5d-cYQ"/>
+                <outlet property="rightButton" destination="Xf1-y8-QYy" id="Zv3-Ek-kN5"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="70"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gQP-C2-YLH">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="70"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleAspectFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Kjj-fQ-jn1">
+                            <rect key="frame" x="118" y="17.5" width="178" height="35"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="JKB-QR-xWf">
+                                    <rect key="frame" x="0.0" y="0.0" width="85" height="35"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nbi-85-NIo">
+                                            <rect key="frame" x="0.0" y="0.0" width="35" height="35"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="Nbi-85-NIo" secondAttribute="height" multiplier="1:1" id="6iI-6b-hpc"/>
+                                                <constraint firstAttribute="width" constant="35" id="phG-y2-nbO"/>
+                                            </constraints>
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <state key="normal" image="heart">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="leftButtonTapped:" destination="-1" eventType="touchUpInside" id="7aQ-9V-s3m"/>
+                                            </connections>
+                                        </button>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UPv-wu-o0f">
+                                            <rect key="frame" x="43" y="0.0" width="42" height="35"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="42" id="wDX-N1-rmf"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="BUY-yL-Axx">
+                                    <rect key="frame" x="93" y="0.0" width="85" height="35"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WUu-uo-3F2">
+                                            <rect key="frame" x="0.0" y="0.0" width="35" height="35"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="WUu-uo-3F2" secondAttribute="height" multiplier="1:1" id="CiY-ma-NCw"/>
+                                                <constraint firstAttribute="width" constant="35" id="eHc-Nw-JmO"/>
+                                            </constraints>
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <state key="normal" image="lightning_bolt">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="rightButtonTapped:" destination="-1" eventType="touchUpInside" id="NJQ-Rm-jch"/>
+                                            </connections>
+                                        </button>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oTh-xH-wb4">
+                                            <rect key="frame" x="43" y="0.0" width="42" height="35"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="42" id="Wni-Aa-d4y"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </stackView>
+                            </subviews>
+                        </stackView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bo9-MH-ceJ">
+                            <rect key="frame" x="143" y="38" width="20" height="19"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="tintColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <state key="normal" backgroundImage="plus.circle.fill" catalog="system"/>
+                            <connections>
+                                <action selector="leftButtonTapped:" destination="-1" eventType="touchUpInside" id="rpN-Ed-K5o"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xf1-y8-QYy">
+                            <rect key="frame" x="236" y="37.5" width="20" height="22"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="tintColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <state key="normal" image="plus.circle.fill" catalog="system">
+                                <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="rightButtonTapped:" destination="-1" eventType="touchUpInside" id="wx3-2W-eNR"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.55686277149999996" green="0.35294118520000001" blue="0.96862745289999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="bo9-MH-ceJ" firstAttribute="leading" secondItem="Nbi-85-NIo" secondAttribute="trailing" constant="-10" id="1BU-uM-WmZ"/>
+                        <constraint firstItem="Kjj-fQ-jn1" firstAttribute="centerY" secondItem="gQP-C2-YLH" secondAttribute="centerY" id="48g-ES-aeG"/>
+                        <constraint firstItem="Xf1-y8-QYy" firstAttribute="top" secondItem="WUu-uo-3F2" secondAttribute="bottom" constant="-15" id="Dg4-hj-kSY"/>
+                        <constraint firstItem="Kjj-fQ-jn1" firstAttribute="centerX" secondItem="gQP-C2-YLH" secondAttribute="centerX" id="Nzd-Da-uCG"/>
+                        <constraint firstItem="Xf1-y8-QYy" firstAttribute="leading" secondItem="WUu-uo-3F2" secondAttribute="trailing" constant="-10" id="gA1-79-pB1"/>
+                        <constraint firstItem="bo9-MH-ceJ" firstAttribute="top" secondItem="Nbi-85-NIo" secondAttribute="bottom" constant="-15" id="mfY-bj-luI"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="top" secondItem="gQP-C2-YLH" secondAttribute="top" id="Esm-tN-JqL"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="gQP-C2-YLH" secondAttribute="bottom" id="Fr5-jL-jEe"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="gQP-C2-YLH" secondAttribute="trailing" id="Ify-xR-lza"/>
+                <constraint firstItem="gQP-C2-YLH" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="dVf-wX-9aX"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="137.59999999999999" y="136.73163418290855"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="heart" width="37.5" height="37.5"/>
+        <image name="lightning_bolt" width="40" height="40"/>
+        <image name="plus.circle.fill" catalog="system" width="128" height="121"/>
+    </resources>
+</document>

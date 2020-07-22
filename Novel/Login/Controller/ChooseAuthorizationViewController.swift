@@ -14,11 +14,11 @@ class ChooseAuthorizationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        FirebaseAuth.Auth.auth().addStateDidChangeListener { (auth, user) in
-                   if user != nil {
-                       self.performSegue(withIdentifier: "moveToMainScreenn", sender: self)
-                   }
-        }
+//        FirebaseAuth.Auth.auth().addStateDidChangeListener { (auth, user) in
+//                   if user != nil {
+//                       self.performSegue(withIdentifier: "moveToMainScreen", sender: self)
+//                   }
+//        }
         
         stackView.isHidden = false
         logoImage.isHidden = false

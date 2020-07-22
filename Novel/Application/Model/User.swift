@@ -16,16 +16,16 @@ struct AppUser {
     let username: String
     let refCode: String
     let didAddreferalBonus: Bool
-    let diamondCurrency: Int
-    let ticketCurrency: Int
+    let heartCurrency: Int
+    let energyCurrency: Int
     
     init(user: User) {
         self.uid = user.uid
         self.email = user.email!
         self.username = user.displayName ?? ""
         self.refCode = user.uid
-        self.diamondCurrency = 0
-        self.ticketCurrency = 0
+        self.heartCurrency = 0
+        self.energyCurrency = 0
         self.didAddreferalBonus = true
     }
     
@@ -35,8 +35,8 @@ struct AppUser {
         email = snapshotValue["email"] as! String
         username = snapshotValue["username"] as! String
         refCode = snapshotValue["refCode"] as! String
-        diamondCurrency = snapshotValue["diamondCurrency"] as! Int
-        ticketCurrency = snapshotValue["ticketCurrency"] as! Int
+        heartCurrency = snapshotValue["heartCurrency"] as! Int
+        energyCurrency = snapshotValue["energyCurrency"] as! Int
         didAddreferalBonus = snapshotValue["didAddreferalBonus"] as! Bool
     }
 }

@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import GoogleMobileAds
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,12 +18,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
         
+        GADMobileAds.sharedInstance().start(completionHandler: nil)
         
         FirebaseAuth.Auth.auth().addStateDidChangeListener { (auth, user) in
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             
            if user != nil {
-                let initialViewController = storyboard.instantiateViewController(withIdentifier: "MainScreenViewController") as? MainScreenViewController
+                let initialViewController = storyboard.instantiateViewController(withIdentifier: "MainUITabBarController") as? MainUITabBarController
                 UIApplication.shared.keyWindow?.rootViewController = initialViewController
            } else {
                 let initialViewController = storyboard.instantiateViewController(withIdentifier: "ChooseAuthorizationViewController") as? ChooseAuthorizationViewController

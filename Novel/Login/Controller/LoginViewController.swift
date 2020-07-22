@@ -224,12 +224,12 @@ class LoginViewController: UIViewController {
                     self?.showAlert(title: "Не получается зарегистрироваться", message: "Пароль должен содержать минимум 6 символов", buttonText: "ok")
                                          break
                    case .invalidEmail:
-                    self?.showAlert(title: "Не получается войти", message: "Неправильная почта", buttonText: "ok")
+                    self?.showAlert(title: "Не получается зарегистрироваться", message: "Неправильная почта", buttonText: "ok")
                    case .networkError:
-                    self?.showAlert(title: "Не получается войти", message: "Ошибка интернета, попробуйте снова", buttonText: "ok")
+                    self?.showAlert(title: "Не получается зарегистрироваться", message: "Ошибка интернета, попробуйте снова", buttonText: "ok")
                        
                    default:
-                    self?.showAlert(title: "Не получается войти", message: "Внутренняя ошибка, попробуйте снова", buttonText: "ok")
+                    self?.showAlert(title: "Не получается зарегистрироваться", message: "Внутренняя ошибка, попробуйте снова", buttonText: "ok")
                        break
                    }
                 }

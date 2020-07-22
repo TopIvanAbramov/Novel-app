@@ -13,6 +13,7 @@
 		2C31752E24BC640900AD5907 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C31752D24BC640900AD5907 /* History.swift */; };
 		2C31753024BC66A700AD5907 /* HistoryListCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C31752F24BC66A700AD5907 /* HistoryListCollectionViewController.swift */; };
 		2C31753224BC685200AD5907 /* HistoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C31753124BC685200AD5907 /* HistoryCollectionViewCell.swift */; };
+		2C35632224C7710C00AD8A82 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C35632124C7710C00AD8A82 /* Notifications.swift */; };
 		2C4143CA24C063FE0028924A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4143C924C063FE0028924A /* Constants.swift */; };
 		2C4143D024C069FD0028924A /* Bonuses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4143CF24C069FD0028924A /* Bonuses.swift */; };
 		2C43789A24BA651900629818 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C43789924BA651900629818 /* ProfileViewController.swift */; };
@@ -24,6 +25,8 @@
 		2C47400B24BD88B000E4B663 /* SectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C47400A24BD88B000E4B663 /* SectionView.swift */; };
 		2C47400F24BDA3B000E4B663 /* BackgroundDecorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C47400E24BDA3AF00E4B663 /* BackgroundDecorationView.swift */; };
 		2C84B8A424BB11C7006D557A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C84B8A324BB11C7006D557A /* User.swift */; };
+		2C9FE23124C5C0D000E47DEE /* CustomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9FE23024C5C0D000E47DEE /* CustomNavigationBar.swift */; };
+		2C9FE23324C5C0E000E47DEE /* CustomNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C9FE23224C5C0E000E47DEE /* CustomNavigationBar.xib */; };
 		2CB0352D24BF0A7600AFD297 /* MainScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB0352C24BF0A7600AFD297 /* MainScreenViewController.swift */; };
 		2CC3FD5524BA4B22008A604F /* ChooseAuthorizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC3FD5224BA4B22008A604F /* ChooseAuthorizationViewController.swift */; };
 		2CC3FD5824BA4DF9008A604F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2CC3FD5724BA4DF9008A604F /* GoogleService-Info.plist */; };
@@ -45,6 +48,7 @@
 		2C31752D24BC640900AD5907 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		2C31752F24BC66A700AD5907 /* HistoryListCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListCollectionViewController.swift; sourceTree = "<group>"; };
 		2C31753124BC685200AD5907 /* HistoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryCollectionViewCell.swift; sourceTree = "<group>"; };
+		2C35632124C7710C00AD8A82 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		2C4143C924C063FE0028924A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		2C4143CF24C069FD0028924A /* Bonuses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bonuses.swift; sourceTree = "<group>"; };
 		2C43789924BA651900629818 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -56,6 +60,8 @@
 		2C47400A24BD88B000E4B663 /* SectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionView.swift; sourceTree = "<group>"; };
 		2C47400E24BDA3AF00E4B663 /* BackgroundDecorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundDecorationView.swift; sourceTree = "<group>"; };
 		2C84B8A324BB11C7006D557A /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		2C9FE23024C5C0D000E47DEE /* CustomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomNavigationBar.swift; path = Novel/CategoryList.swift/CustomNavigationBar.swift; sourceTree = SOURCE_ROOT; };
+		2C9FE23224C5C0E000E47DEE /* CustomNavigationBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomNavigationBar.xib; sourceTree = "<group>"; };
 		2CB0352C24BF0A7600AFD297 /* MainScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainScreenViewController.swift; path = Novel/CategoryList.swift/MainScreenViewController.swift; sourceTree = SOURCE_ROOT; };
 		2CC3FD5224BA4B22008A604F /* ChooseAuthorizationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseAuthorizationViewController.swift; sourceTree = "<group>"; };
 		2CC3FD5724BA4DF9008A604F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -205,6 +211,8 @@
 		2C43E70E24BAEF8C00F5BBA2 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				2C9FE23024C5C0D000E47DEE /* CustomNavigationBar.swift */,
+				2C9FE23224C5C0E000E47DEE /* CustomNavigationBar.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -329,6 +337,7 @@
 				2CE0890124BA47680063D8F8 /* Info.plist */,
 				2CC3FD5724BA4DF9008A604F /* GoogleService-Info.plist */,
 				2C4143C924C063FE0028924A /* Constants.swift */,
+				2C35632124C7710C00AD8A82 /* Notifications.swift */,
 			);
 			path = Novel;
 			sourceTree = "<group>";
@@ -491,6 +500,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2CE0890024BA47680063D8F8 /* LaunchScreen.storyboard in Resources */,
+				2C9FE23324C5C0E000E47DEE /* CustomNavigationBar.xib in Resources */,
 				2CC3FD5824BA4DF9008A604F /* GoogleService-Info.plist in Resources */,
 				2CE088FD24BA47680063D8F8 /* Assets.xcassets in Resources */,
 				2CE088FB24BA47670063D8F8 /* Main.storyboard in Resources */,
@@ -577,9 +587,11 @@
 				2C43E71124BAEFB500F5BBA2 /* CategoryListViewController.swift in Sources */,
 				2CC3FD5B24BA5477008A604F /* RoundButton.swift in Sources */,
 				2C47400524BCCBA300E4B663 /* SettingsViewController.swift in Sources */,
+				2C9FE23124C5C0D000E47DEE /* CustomNavigationBar.swift in Sources */,
 				2CE088F424BA47670063D8F8 /* AppDelegate.swift in Sources */,
 				2CE088F624BA47670063D8F8 /* SceneDelegate.swift in Sources */,
 				2C31753024BC66A700AD5907 /* HistoryListCollectionViewController.swift in Sources */,
+				2C35632224C7710C00AD8A82 /* Notifications.swift in Sources */,
 				2C47400B24BD88B000E4B663 /* SectionView.swift in Sources */,
 				2C473FFF24BCB06E00E4B663 /* SectionHeaderView.swift in Sources */,
 				2C1F1D9724C193550088711B /* RecomendationsCollectionViewCell.swift in Sources */,
@@ -736,6 +748,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 45UDDW3RM4;
 				INFOPLIST_FILE = Novel/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -743,7 +756,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.IvanAbramov.Novel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -755,6 +768,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 45UDDW3RM4;
 				INFOPLIST_FILE = Novel/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -762,7 +776,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.IvanAbramov.Novel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
