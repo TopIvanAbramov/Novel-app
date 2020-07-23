@@ -20,18 +20,42 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
     
     
     func leftButtonTapped() {
-      // Ad successfully loaded.
-      if self.rewardedAdvideo?.isReady == true {
-        self.typeOfReward = .Heart
-        self.rewardedAdvideo?.present(fromRootViewController: self, delegate:self)
-      }
+          self.typeOfReward = .Heart
+            
+        // Ad successfully loaded.
+        if self.rewardedAdvideo?.isReady == true {
+            stopActivityIndicator()
+            readyToPresentAd = false
+            self.rewardedAdvideo?.present(fromRootViewController: self, delegate:self)
+        } else {
+            readyToPresentAd = true
+            startActivityIndicator(withBlur: true, andText: "Загружаем рекламное видео...", showCloseButton: true, closeCompletion: {
+                print("\n\nClose download ad\n\n")
+                self.readyToPresentAd = false
+                self.stopActivityIndicator()
+            })
+            
+            rewardedAdvideo = createAndLoadRewardedAd()
+        }
     }
     
     func rightButtonTapped() {
+        self.typeOfReward = .Energy
+        
         // Ad successfully loaded.
         if self.rewardedAdvideo?.isReady == true {
-            self.typeOfReward = .Energy
+            stopActivityIndicator()
+            readyToPresentAd = false
             self.rewardedAdvideo?.present(fromRootViewController: self, delegate:self)
+        } else {
+            readyToPresentAd = true
+            startActivityIndicator(withBlur: true, andText: "Загружаем рекламное видео...", showCloseButton: true, closeCompletion: {
+                print("\n\nClose download ad\n\n")
+                self.readyToPresentAd = false
+                self.stopActivityIndicator()
+            })
+            
+            rewardedAdvideo = createAndLoadRewardedAd()
         }
     }
     
@@ -40,6 +64,7 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
     
     var rewardedAdvideo: GADRewardedAd?
     var typeOfReward: TypeOfReward?
+    var readyToPresentAd: Bool = false
     
     var ref: DatabaseReference!
     var user: AppUser!
@@ -50,7 +75,9 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
     var blurEffect: UIBlurEffect?
     var currentCellsRowNumber: Int = 1
 
-
+    var activityIndicator = UIActivityIndicatorView(style: .large)
+    var activityIndicatorText: UILabel!
+    var closeActivityIndicatorClosure: (() -> ())?
     var timer: Timer?
     
     @IBOutlet weak var customNavigationBar: CustomNavigationBar!
@@ -73,19 +100,24 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
         
         collectionView.insetsLayoutMarginsFromSafeArea = false
         
+        startActivityIndicator(withBlur: true, andText: "Загружаем истории...", showCloseButton: false, closeCompletion: {})
 //        addreferalBonus()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-//        prsentBonusView(withTitle: "Вы получили бонус", andSubtitle: "Ежедневый бонус - 5 энергий", completion: {
-//            print("\n\n Get bonus tapped\n\n")
-//        })
         
         tabBarController?.title = "Истории"
         
         rewardedAdvideo = createAndLoadRewardedAd()
+        readyToPresentAd = false
+//        let rewardedAdvideo = GADRewardedAd(adUnitID: "ca-app-pub-3940256099942544/1712485313")
+//
+//        rewardedAdvideo.load(GADRequest()) { error in
+//            if error != nil {
+//                rewardedAdvideo.load(GADRequest())
+//            }
+//        }
         
         startObserveUser()
         
@@ -110,15 +142,18 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
                        self?.categories += _categories
                       
                        DispatchQueue.main.async {
-                           // reload your collection view here:
+                        self?.stopActivityIndicator()
+                           // reload collection view here:
                             self?.collectionView.reloadData()
                        }
                 })
         }
        
         
-        scrollSectionCellsAutomatically()
+//        scrollSectionCellsAutomatically()
     }
+    
+//  Observe user profile
     
     func startObserveUser() {
         let userRef = Database.database().reference(withPath: "users/\(user.uid)")
@@ -137,6 +172,64 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
         })
     }
     
+//    MARK:- Activity indicator
+    
+    func startActivityIndicator(withBlur blur: Bool, andText text: String, showCloseButton: Bool, closeCompletion: @escaping () -> ()) {
+        print("\n\nStart to display activity indicator\n\n")
+        
+        if blur {
+            blurEffect = UIBlurEffect(style: UIBlurEffect.Style.extraLight)
+            let blurEffectView = UIVisualEffectView(effect: blurEffect)
+            blurEffectView.frame = self.view.bounds
+            blurEffectView.tag = 99
+            blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            self.view.addSubview(blurEffectView)
+            
+            if !text.isEmpty {
+                
+                let frame = CGRect(x: 0, y: 0, width: 200, height: 35)
+                let label = UILabel(frame: frame)
+                blurEffectView.contentView.addSubview(label)
+                
+                label.textAlignment = .center
+                label.text = text
+                label.sizeToFit()
+                label.textColor = .black
+                label.center = self.view.center.applying(CGAffineTransform(translationX: 0, y: -45))
+            }
+            
+            guard showCloseButton else { return }
+                
+            let frame = CGRect(x: 40, y: 40, width: 60, height: 60)
+            let closeButton = UIButton(frame: frame)
+            closeButton.setImage(UIImage(named: "cancel"), for: .normal)
+            closeButton.tintColor = .black
+            
+            closeButton.addTarget(self, action: #selector(closeActivityIndicator), for: .touchUpInside)
+            closeActivityIndicatorClosure = closeCompletion
+            blurEffectView.contentView.addSubview(closeButton)
+            
+//            closeButton.tar
+        }
+        
+        self.view.addSubview(activityIndicator)
+        activityIndicator.center = self.view.center
+        activityIndicator.startAnimating()
+    }
+    
+    func stopActivityIndicator() {
+        print("\n\nStop to display activity indicator\n\n")
+        
+        view.viewWithTag(99)?.removeFromSuperview()
+        activityIndicator.stopAnimating()
+        activityIndicator.removeFromSuperview()
+    }
+    
+    @objc func closeActivityIndicator() {
+        if let closure = closeActivityIndicatorClosure {
+            closure()
+        }
+    }
     
 //    MARK:- BonusView
     
@@ -148,7 +241,7 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
             if !(user.didAddreferalBonus) {
                 _ = getBonuses(completion: { bonuses in
                     
-                    self.prsentBonusView(withTitle: "Вы получили бонус!", andSubtitle: "Бонус за регистрацию по реферальной ссылке \(bonuses.referalBonuse) энергии") {
+                    self.presentBonusView(withTitle: "Вы получили бонус!", andSubtitle: "Бонус за регистрацию по реферальной ссылке \(bonuses.referalBonuse) энергии") {
                         userRef.child("\(user.uid)/energyCurrency").setValue((user.energyCurrency) + bonuses.referalBonuse)
                         userRef.child("\(user.uid)/didAddreferalBonus").setValue(true)
                     }
@@ -165,9 +258,9 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
         })
     }
     
-    func prsentBonusView(withTitle title: String, andSubtitle subtitle: String, completion: @escaping () -> ()) {
+    func presentBonusView(withTitle title: String, andSubtitle subtitle: String, completion: @escaping () -> ()) {
         let uiscreenBounds = UIScreen.main.bounds
-        let rect = CGRect(x: 0, y: 0, width: uiscreenBounds.width * 0.8, height: uiscreenBounds.width * 0.8 * 50 / 35)
+        let rect = CGRect(x: 0, y: 0, width: uiscreenBounds.width * 0.8, height: uiscreenBounds.width * 0.8 * 55 / 35)
         
         bonusView = BonusUIView(frame: rect)
         bonusView?.center = self.view.center
@@ -250,12 +343,12 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
     
 //   MARK:- Handle internal currency
     
-    func updateEnergyCurrency(withVAlue value: Int) {
+    func updateEnergyCurrency(withValue value: Int) {
         let userRef = Database.database().reference(withPath: "users/\(user.uid)")
         userRef.child("energyCurrency").setValue(user.energyCurrency + value)
     }
     
-    func updateHeartCurrency(withVAlue value: Int) {
+    func updateHeartCurrency(withValue value: Int) {
         let userRef = Database.database().reference(withPath: "users/\(user.uid)")
         userRef.child("heartCurrency").setValue(user.heartCurrency + value)
        }
@@ -265,13 +358,13 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
     func rewardedAd(_ rewardedAd: GADRewardedAd, userDidEarn reward: GADAdReward) {
         switch typeOfReward {
         case .Energy:
-            prsentBonusView(withTitle: "Вы получили бонус!", andSubtitle: "Бонус за просмотр рекламы - 5 энергий", completion: {
-                self.updateEnergyCurrency(withVAlue: 5)
+            presentBonusView(withTitle: "Вы получили бонус!", andSubtitle: "Бонус за просмотр рекламы - 5 энергий", completion: {
+                self.updateEnergyCurrency(withValue: 5)
             })
             break
         case .Heart:
-            prsentBonusView(withTitle: "Вы получили бонус!", andSubtitle: "Бонус за просмотр рекламы - 5 энергий", completion: {
-                self.updateHeartCurrency(withVAlue: 1)
+            presentBonusView(withTitle: "Вы получили бонус!", andSubtitle: "Бонус за просмотр рекламы - 5 энергий", completion: {
+                self.updateHeartCurrency(withValue: 1)
             })
             break
         default:
@@ -295,7 +388,13 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
             
           Notifications().showAlert(title: "Не можем загрузить видео", message: "Возможно, проблема с интернетом, попробуйте снова", buttonText: "Ок", view: self)
         } else {
-          print("Loading Succeeded")
+            print("Loading Succeeded")
+            self.stopActivityIndicator()
+            
+            if self.rewardedAdvideo?.isReady == true {
+                guard self.readyToPresentAd else { return }
+                self.rewardedAdvideo?.present(fromRootViewController: self, delegate:self)
+            }
         }
       }
       return newRewardedAd
@@ -513,17 +612,26 @@ extension CategoryListViewController: UICollectionViewDataSource, UICollectionVi
         default:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "history", for: indexPath) as! HistoryCollectionViewCell
 
-                cell.backgroundColor = .clear
-                cell.layer.masksToBounds = false
-                cell.layer.shadowOpacity = 0.23
-                cell.layer.shadowRadius = 4
-                cell.layer.shadowOffset = CGSize(width: 0, height: 0)
-                cell.layer.shadowColor = UIColor.black.cgColor
+//                cell.backgroundColor = .clear
+//                cell.layer.masksToBounds = false
+//                cell.layer.shadowOpacity = 0.23
+//                cell.layer.shadowRadius = 4
+//                cell.layer.shadowOffset = CGSize(width: 0, height: 0)
+//                cell.layer.shadowColor = UIColor.black.cgColor
+                
+                cell.historyImage.backgroundColor = .clear
+                cell.historyImage.layer.masksToBounds = false
+                cell.historyImage.clipsToBounds = true
+                cell.historyImage.layer.shadowOpacity = 0.23
+                cell.historyImage.layer.shadowRadius = 4
+                cell.historyImage.layer.shadowOffset = CGSize(width: 0, height: 0)
+                cell.historyImage.layer.shadowColor = UIColor.black.cgColor
+                
 
                 // add corner radius on 'contentView'
-                cell.contentView.backgroundColor =  .white //#colorLiteral(red: 1, green: 0.9127054811, blue: 0, alpha: 1) //.white
-                cell.contentView.layer.cornerRadius = 8
+//                cell.contentView.layer.cornerRadius = 8
                 
+                cell.historyImage.layer.cornerRadius = 8
                 
                 cell.historyName.text = "Vintage Tales Norman Clougi"
                 
