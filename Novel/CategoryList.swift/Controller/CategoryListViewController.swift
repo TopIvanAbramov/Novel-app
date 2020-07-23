@@ -17,7 +17,112 @@ enum TypeOfReward {
 }
 
 class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRewardedAdDelegate, BonusUIViewDelegate {
+
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var customNavigationBar: CustomNavigationBar!
     
+    var rewardedAdvideo: GADRewardedAd?
+    var typeOfReward: TypeOfReward?
+    var readyToPresentAd: Bool = false
+    
+    var ref: DatabaseReference!
+    var user: AppUser!
+    var categories = Array<Category>()
+    var bonusView: BonusUIView?
+    var bonusTappedCompetion = {}
+    
+    var blurEffect: UIBlurEffect?
+    var currentCellsRowNumber: Int = 1
+
+    var activityIndicator = UIActivityIndicatorView(style: .large)
+    var activityIndicatorText: UILabel!
+    var closeActivityIndicatorClosure: (() -> ())?
+    var timer: Timer?
+    
+//    MARK: - ViewLifeCycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        guard let currentUser = Auth.auth().currentUser else { return }
+        user = AppUser(user: currentUser)
+        ref = Database.database().reference(withPath: "categories")
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.collectionViewLayout = compositionalLayout
+        
+        customNavigationBar.delegate = self
+        
+        
+        collectionView.insetsLayoutMarginsFromSafeArea = false
+        
+        startActivityIndicator(withBlur: true, andText: "Загружаем истории...", showCloseButton: false, closeCompletion: {})
+//        addreferalBonus()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        tabBarController?.title = "Истории"
+        
+        rewardedAdvideo = createAndLoadRewardedAd()
+        readyToPresentAd = false
+        
+        startObserveUser()
+        
+        DispatchQueue.global(qos: .background).async {
+            self.ref.observe(.value, with: {[weak self] (snapshot) in
+               var _categories = Array<Category>()
+               var recomendations = Array<Category>()
+               
+               for item in snapshot.children {
+                   let category = Category(snapshot: item as! DataSnapshot)
+                   
+                   if category.name == "Рекомендации" {
+                       recomendations.append(category)
+                   } else {
+                         _categories.append(category)
+                   }
+               }
+               
+            
+               self?.categories = recomendations
+               self?.categories += _categories
+              
+               DispatchQueue.main.async {
+                self?.stopActivityIndicator()
+                   // reload collection view here:
+                    self?.collectionView.reloadData()
+               }
+            })
+        }
+        
+        getBonus()
+    }
+    
+//  Observe user profile
+    
+    func startObserveUser() {
+        let userRef = Database.database().reference(withPath: "users/\(user.uid)")
+        
+        print("User ref: \(userRef.description()) UID: \(user.uid)")
+        
+        userRef.observe(.value, with: {(snapshot) in
+            if type(of: (snapshot.value  as! [String: AnyObject])) != NSNull.self {
+                self.user = AppUser(snapshot: snapshot)
+                
+                self.customNavigationBar.setHeartCurrency(withValue: self.user.heartCurrency)
+                self.customNavigationBar.setEnergyCurrency(withValue: self.user.energyCurrency)
+                
+                self.checkForDailyBonus()
+                 print("\n\nUpdate user info\n\n")
+            }
+        })
+    }
+    
+    
+//  MARK:- NavigationBarDelegate
     
     func leftButtonTapped() {
           self.typeOfReward = .Heart
@@ -59,119 +164,6 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
         }
     }
     
-    
-    @IBOutlet weak var collectionView: UICollectionView!
-    
-    var rewardedAdvideo: GADRewardedAd?
-    var typeOfReward: TypeOfReward?
-    var readyToPresentAd: Bool = false
-    
-    var ref: DatabaseReference!
-    var user: AppUser!
-    var categories = Array<Category>()
-    var bonusView: BonusUIView?
-    var bonusTappedCompetion = {}
-    
-    var blurEffect: UIBlurEffect?
-    var currentCellsRowNumber: Int = 1
-
-    var activityIndicator = UIActivityIndicatorView(style: .large)
-    var activityIndicatorText: UILabel!
-    var closeActivityIndicatorClosure: (() -> ())?
-    var timer: Timer?
-    
-    @IBOutlet weak var customNavigationBar: CustomNavigationBar!
-    
-//    MARK: - ViewLifeCycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        guard let currentUser = Auth.auth().currentUser else { return }
-        user = AppUser(user: currentUser)
-        ref = Database.database().reference(withPath: "categories")
-        
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.collectionViewLayout = compositionalLayout
-        
-        customNavigationBar.delegate = self
-        
-        
-        collectionView.insetsLayoutMarginsFromSafeArea = false
-        
-        startActivityIndicator(withBlur: true, andText: "Загружаем истории...", showCloseButton: false, closeCompletion: {})
-//        addreferalBonus()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        tabBarController?.title = "Истории"
-        
-        rewardedAdvideo = createAndLoadRewardedAd()
-        readyToPresentAd = false
-//        let rewardedAdvideo = GADRewardedAd(adUnitID: "ca-app-pub-3940256099942544/1712485313")
-//
-//        rewardedAdvideo.load(GADRequest()) { error in
-//            if error != nil {
-//                rewardedAdvideo.load(GADRequest())
-//            }
-//        }
-        
-        startObserveUser()
-        
-        DispatchQueue.global(qos: .background).async {
-            self.ref.observe(.value, with: {[weak self] (snapshot) in
-                       var _categories = Array<Category>()
-                       var recomendations = Array<Category>()
-                       
-                       for item in snapshot.children {
-                           let category = Category(snapshot: item as! DataSnapshot)
-                           
-                           if category.name == "Рекомендации" {
-                               recomendations.append(category)
-                           } else {
-                                 _categories.append(category)
-                           }
-                       }
-                       
-                    
-                       self?.categories = recomendations
-                       
-                       self?.categories += _categories
-                      
-                       DispatchQueue.main.async {
-                        self?.stopActivityIndicator()
-                           // reload collection view here:
-                            self?.collectionView.reloadData()
-                       }
-                })
-        }
-       
-        
-//        scrollSectionCellsAutomatically()
-    }
-    
-//  Observe user profile
-    
-    func startObserveUser() {
-        let userRef = Database.database().reference(withPath: "users/\(user.uid)")
-        
-        print("User ref: \(userRef.description()) UID: \(user.uid)")
-        
-        userRef.observe(.value, with: {(snapshot) in
-            if type(of: (snapshot.value  as! [String: AnyObject])) != NSNull.self {
-                self.user = AppUser(snapshot: snapshot)
-                
-                self.customNavigationBar.setHeartCurrency(withValue: self.user.heartCurrency)
-                self.customNavigationBar.setEnergyCurrency(withValue: self.user.energyCurrency)
-                
-                 print("\n\nUpdate user info\n\n")
-            }
-        })
-    }
-    
 //    MARK:- Activity indicator
     
     func startActivityIndicator(withBlur blur: Bool, andText text: String, showCloseButton: Bool, closeCompletion: @escaping () -> ()) {
@@ -198,18 +190,16 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
                 label.center = self.view.center.applying(CGAffineTransform(translationX: 0, y: -45))
             }
             
-            guard showCloseButton else { return }
+            if showCloseButton {
+                let frame = CGRect(x: 40, y: 40, width: 60, height: 60)
+                let closeButton = UIButton(frame: frame)
+                closeButton.setImage(UIImage(named: "cancel"), for: .normal)
+                closeButton.tintColor = .black
                 
-            let frame = CGRect(x: 40, y: 40, width: 60, height: 60)
-            let closeButton = UIButton(frame: frame)
-            closeButton.setImage(UIImage(named: "cancel"), for: .normal)
-            closeButton.tintColor = .black
-            
-            closeButton.addTarget(self, action: #selector(closeActivityIndicator), for: .touchUpInside)
-            closeActivityIndicatorClosure = closeCompletion
-            blurEffectView.contentView.addSubview(closeButton)
-            
-//            closeButton.tar
+                closeButton.addTarget(self, action: #selector(closeActivityIndicator), for: .touchUpInside)
+                closeActivityIndicatorClosure = closeCompletion
+                blurEffectView.contentView.addSubview(closeButton)
+            }
         }
         
         self.view.addSubview(activityIndicator)
@@ -239,7 +229,7 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
         userRef.child("\(user.uid)").observeSingleEvent(of: .value, with: {(snapshot) in
             let user = AppUser(snapshot: snapshot)
             if !(user.didAddreferalBonus) {
-                _ = getBonuses(completion: { bonuses in
+                _ = Constants().getBonuses(completion: { bonuses in
                     
                     self.presentBonusView(withTitle: "Вы получили бонус!", andSubtitle: "Бонус за регистрацию по реферальной ссылке \(bonuses.referalBonuse) энергии") {
                         userRef.child("\(user.uid)/energyCurrency").setValue((user.energyCurrency) + bonuses.referalBonuse)
@@ -337,8 +327,9 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
         ref.child(category4.name).setValue(["name": category4.name, "color": category4.color])
     }
     
-    func createStories() {
-        
+    func getBonus() {
+        let bonuse = Constants().bonuse
+        print("Daily bonuse: \(bonuse.dailyBonuse) Referal bonuse: \(bonuse.referalBonuse)")
     }
     
 //   MARK:- Handle internal currency
@@ -351,7 +342,7 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
     func updateHeartCurrency(withValue value: Int) {
         let userRef = Database.database().reference(withPath: "users/\(user.uid)")
         userRef.child("heartCurrency").setValue(user.heartCurrency + value)
-       }
+    }
     
 //  MARK:- Handle mobile ad video
     
@@ -363,7 +354,7 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
             })
             break
         case .Heart:
-            presentBonusView(withTitle: "Вы получили бонус!", andSubtitle: "Бонус за просмотр рекламы - 5 энергий", completion: {
+            presentBonusView(withTitle: "Вы получили бонус!", andSubtitle: "Бонус за просмотр рекламы - 1 сердце", completion: {
                 self.updateHeartCurrency(withValue: 1)
             })
             break
@@ -384,9 +375,13 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
         let newRewardedAd = GADRewardedAd(adUnitID: "ca-app-pub-3940256099942544/1712485313")
         newRewardedAd.load(GADRequest()) { error in
         if let error = error {
-          print("Loading failed: \(error)")
+            print("Loading failed: \(error)")
             
-          Notifications().showAlert(title: "Не можем загрузить видео", message: "Возможно, проблема с интернетом, попробуйте снова", buttonText: "Ок", view: self)
+            if self.readyToPresentAd {
+                Notifications().showAlert(title: "Не можем загрузить видео", message: "Возможно, проблема с интернетом, попробуйте снова", buttonText: "Ок", view: self)
+                self.stopActivityIndicator()
+                self.readyToPresentAd = false
+            }
         } else {
             print("Loading Succeeded")
             self.stopActivityIndicator()
@@ -398,6 +393,66 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
         }
       }
       return newRewardedAd
+    }
+    
+//  MARK:- Daily bonus
+    
+   func checkForDailyBonus() {
+        let currentDate = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss zzz"
+    
+        print("\n\nUser bonusTime:  \(user.bonusTime.trimmingCharacters(in: .whitespacesAndNewlines))\n\n")
+    
+        if !(user.bonusTime.isEmpty) {
+            let date = dateFormatter.date(from: user.bonusTime)
+
+            print("User bonusTime not empty")
+            
+            guard let bonusDate = date else { return }
+        
+            print("Bonuse date: \(bonusDate)\n\n")
+            
+            if bonusDate <= currentDate {
+                presentBonusView(withTitle: "Вы получили ежедневный бонус!", andSubtitle: "Бонус 5 энергий! Заходите каждый день и получайте бесплатно") {
+                    self.updateEnergyCurrency(withValue: Constants().bonuse.referalBonuse)
+                }
+                self.setDailyBonus(afterHours: 10)
+            } else {
+                print("Change to >=")
+            }
+        } else {
+            setDailyBonus(afterHours: 24)
+            
+        }
+    }
+
+    func getCurrentDate() -> String {
+        let currentTime = Date()
+        
+        print(currentTime)
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss zzz"
+        
+        let formatedDate = dateFormatter.string(from: currentTime)
+        
+        return formatedDate
+    }
+    
+    func setDailyBonus(afterHours hours: Int) {
+        var dateComponents = DateComponents()
+        dateComponents.hour = hours
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss zzz"
+        
+        guard let nextDate = Calendar.current.date(byAdding: dateComponents, to: Date()) else { return }
+        let formattedDate = dateFormatter.string(from: nextDate)
+        
+        let userRef = Database.database().reference(withPath: "users/\(user.uid)")
+        userRef.child("bonusTime").setValue(formattedDate)
+        
+        Notifications().scheduleNotification(withTitle: "Вы получили бонус!", andBody: "Ежедневный бонус составляет 15 энергий", onDate: nextDate, withIdentifier: formattedDate)
     }
     
     

@@ -17,23 +17,34 @@ class Constants {
         var signUp = "signUp"
         var signIn = "signIn"
     }
+    
+    var bonuse =  Bonuses(referalBonuse: 0, dailyBonuse: 0, firstRegistrationBonuse: 0)
+    
+    func startObserveBonuses() {
+        Constants().ref.reference(withPath: "bonuses").observeSingleEvent(of: .value, with: { (snapshot) in
+            let newbonuse = Bonuses(snapshot: snapshot)
+
+            self.bonuse = newbonuse
+        })
+    }
+
+
+    func getBonuses(completion: @escaping (Bonuses) -> Void) -> Bonuses {
+        var bonuse = Bonuses()
+
+        Constants().ref.reference(withPath: "bonuses").observeSingleEvent(of: .value, with: { (snapshot) in
+            let newbonuse = Bonuses(snapshot: snapshot)
+
+             print("\n\n Function:", newbonuse.referalBonuse,  newbonuse.dailyBonuse, newbonuse.firstRegistrationBonuse, "\n\n")
+
+             bonuse = newbonuse
+
+            print("\n\n Bonuse function:", newbonuse.referalBonuse,  newbonuse.dailyBonuse, newbonuse.firstRegistrationBonuse, "\n\n")
+
+            completion(bonuse)
+        })
+        return bonuse
+    }
 }
 
-func getBonuses(completion: @escaping (Bonuses) -> Void) -> Bonuses {
-    var bonuse = Bonuses()
-    
-    Constants().ref.reference(withPath: "bonuses").observeSingleEvent(of: .value, with: { (snapshot) in
-        let newbonuse = Bonuses(snapshot: snapshot)
-        
-         print("\n\n Function:", newbonuse.referalBonuse,  newbonuse.dailyBonuse, newbonuse.firstRegistrationBonuse, "\n\n")
-        
-         bonuse = newbonuse
-        
-        print("\n\n Bonuse function:", newbonuse.referalBonuse,  newbonuse.dailyBonuse, newbonuse.firstRegistrationBonuse, "\n\n")
-        
-        completion(bonuse)
-    })
 
-    
-    return bonuse
-}

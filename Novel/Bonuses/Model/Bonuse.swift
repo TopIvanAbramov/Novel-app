@@ -1,24 +1,25 @@
 //
-//  Bonuses.swift
+//  Bonuse.swift
 //  Novel
 //
-//  Created by Иван Абрамов on 16.07.2020.
+//  Created by Иван Абрамов on 23.07.2020.
 //  Copyright © 2020 Иван Абрамов. All rights reserved.
 //
 
 import Firebase
+import Foundation
 
-struct Bonuses {
+struct Bonuse {
     
     let referalBonuse: Int
     let dailyBonuse: Int
     let firstRegistrationBonuse: Int
     
-    init(referalBonuse: Int, dailyBonuse: Int, firstRegistrationBonuse: Int) {
-        self.referalBonuse = referalBonuse
-        self.dailyBonuse = dailyBonuse
-        self.firstRegistrationBonuse = firstRegistrationBonuse
-    }
+//    init(referalBonuse: Int, dailyBonuse: Int, firstRegistrationBonuse: Int) {
+//        self.referalBonuse = referalBonuse
+//        self.dailyBonuse = dailyBonuse
+//        self.firstRegistrationBonuse = firstRegistrationBonuse
+//    }
     
     init() {
         self.referalBonuse = 0
