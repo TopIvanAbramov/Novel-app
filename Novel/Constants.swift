@@ -19,15 +19,6 @@ class Constants {
     }
     
     var bonuse =  Bonuses(referalBonuse: 0, dailyBonuse: 0, firstRegistrationBonuse: 0)
-    
-    func startObserveBonuses() {
-        Constants().ref.reference(withPath: "bonuses").observeSingleEvent(of: .value, with: { (snapshot) in
-            let newbonuse = Bonuses(snapshot: snapshot)
-
-            self.bonuse = newbonuse
-        })
-    }
-
 
     func getBonuses(completion: @escaping (Bonuses) -> Void) -> Bonuses {
         var bonuse = Bonuses()

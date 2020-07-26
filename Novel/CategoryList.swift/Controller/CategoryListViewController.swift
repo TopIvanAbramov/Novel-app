@@ -64,6 +64,8 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        getBonus()
+        
         tabBarController?.title = "Истории"
         
         rewardedAdvideo = createAndLoadRewardedAd()
@@ -97,8 +99,6 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
                }
             })
         }
-        
-        getBonus()
     }
     
 //  Observe user profile
@@ -328,8 +328,11 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
     }
     
     func getBonus() {
-        let bonuse = Constants().bonuse
-        print("Daily bonuse: \(bonuse.dailyBonuse) Referal bonuse: \(bonuse.referalBonuse)")
+//        let bonuse = Constants().bonuse
+//        print("Daily bonuse: \(bonuse.dailyBonuse) Referal bonuse: \(bonuse.referalBonuse)")
+        
+       // UUID(uuidString: <#T##String#>)
+       // print("\n\n Hash  value: \("sB8GauHUh".hashValue.hashValue)\n\n")
     }
     
 //   MARK:- Handle internal currency

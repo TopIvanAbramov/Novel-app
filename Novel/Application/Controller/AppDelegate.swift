@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         
-        Constants().startObserveBonuses()
+//        Constants().startObserveBonuses()
         
         FirebaseAuth.Auth.auth().addStateDidChangeListener { (auth, user) in
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
