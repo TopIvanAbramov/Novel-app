@@ -14,6 +14,8 @@ class ChooseAuthorizationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        logoImage.layer.cornerRadius =  20
+        
 //        FirebaseAuth.Auth.auth().addStateDidChangeListener { (auth, user) in
 //                   if user != nil {
 //                       self.performSegue(withIdentifier: "moveToMainScreen", sender: self)

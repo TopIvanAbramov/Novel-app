@@ -19,19 +19,22 @@ public enum AuthorizationState {
 class LoginViewController: UIViewController {
 
     @IBOutlet weak var sendButton: UIButton!
+    @IBOutlet weak var changeAuthorizationButton: UIButton!
+    @IBOutlet weak var resetPasswordButton: UIButton!
     @IBOutlet weak var backgroundImage: UIImageView!
     @IBOutlet weak var footerView: UIImageView!
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var email: UITextField!
     @IBOutlet weak var footerHeight: NSLayoutConstraint!
     @IBOutlet weak var promocode: UITextField!
-    @IBOutlet weak var bottomButtonConstraints: NSLayoutConstraint!
+    @IBOutlet weak var bottomStackViewConstraints: NSLayoutConstraint!
     
     var ref: DatabaseReference!
     
     var authorizationState: AuthorizationState = .singIn
     var oldFooterHeight: CGFloat = 0
     var oldCornerRadius: CGFloat = 0
+    var oldBottomStackViewConstraints: CGFloat = 0
     var keyboardHeight: CGFloat?
     
     override func viewDidLoad() {
@@ -39,7 +42,7 @@ class LoginViewController: UIViewController {
         
         ref = Database.database().reference(withPath: "users")
         
-        footerView.layer.cornerRadius = 50
+        footerView.layer.cornerRadius = 40
         footerView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         footerView.clipsToBounds = true
         
@@ -63,26 +66,35 @@ class LoginViewController: UIViewController {
             }
         }
         
+        changeAuthorizationButton.setTitleColor(#colorLiteral(red: 1, green: 0.8, blue: 0, alpha: 1), for: .normal)
+        
+        if authorizationState == .singIn {
+            resetPasswordButton.setTitleColor(#colorLiteral(red: 1, green: 0.8, blue: 0, alpha: 1), for: .normal)
+        }
+        
         let bottomLine = CALayer()
         bottomLine.frame = CGRect(x: 0.0, y: email.bounds.height - 20, width: email.frame.width, height: 1.0)
-        bottomLine.backgroundColor = #colorLiteral(red: 0.3215686275, green: 0.5176470588, blue: 0.8823529412, alpha: 1)
+        bottomLine.backgroundColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
         email.borderStyle = UITextField.BorderStyle.none
         email.layer.addSublayer(bottomLine)
         
         let bottomLine2 = CALayer()
         bottomLine2.frame = CGRect(x: 0.0, y: password.bounds.height - 20, width: password.bounds.width, height: 1.0)
-        bottomLine2.backgroundColor = #colorLiteral(red: 0.3215686275, green: 0.5176470588, blue: 0.8823529412, alpha: 1)
+        bottomLine2.backgroundColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
         password.borderStyle = UITextField.BorderStyle.none
         password.layer.addSublayer(bottomLine2)
         
         if authorizationState == .signUp {
             let bottomLine3 = CALayer()
             bottomLine3.frame = CGRect(x: 0.0, y: promocode.bounds.height - 20, width: promocode.bounds.width, height: 1.0)
-            bottomLine3.backgroundColor = #colorLiteral(red: 0.3215686275, green: 0.5176470588, blue: 0.8823529412, alpha: 1)
+            bottomLine3.backgroundColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
             promocode.borderStyle = UITextField.BorderStyle.none
             promocode.layer.addSublayer(bottomLine3)
         }
         
+        oldBottomStackViewConstraints = bottomStackViewConstraints.constant
+        oldFooterHeight = footerHeight.constant
+        oldCornerRadius = footerView.layer.cornerRadius
         
         NotificationCenter.default.addObserver(
             self,
@@ -91,14 +103,9 @@ class LoginViewController: UIViewController {
             object: nil
         )
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-    }
-    
 
     
-    @IBAction func tapAction(_ sender: Any) {
-    }
+//    MARK:- Handle keyboard up/down
     
     @objc func keyboardWillShow(_ notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
@@ -107,43 +114,35 @@ class LoginViewController: UIViewController {
             
             let keyboardHeight = keyboardRectangle.height
             
-            print("Height: \(keyboardHeight) Minus distance: \((sendButton.frame.size.height + sendButton.frame.origin.y))")
+            print("\n\nHeight: \(keyboardHeight) \n\n")
             
-            guard oldFooterHeight == 0 else { return }
+            footerHeight.constant =  UIScreen.main.bounds.height
+            bottomStackViewConstraints.constant = -keyboardHeight - 10
             
-//            guard keyboardHeight != 0 else { return }
-            
-            var constant = CGFloat(0)
-
-            if authorizationState == .singIn {
-                constant = CGFloat(110) //CGFloat(75.0)
-            } else {
-                constant = CGFloat(57)
-            }
-            
-//          227 and 69
-            
-//           50
-            
-            oldCornerRadius = footerView.layer.cornerRadius
             footerView.layer.cornerRadius =  0
             
-            oldFooterHeight = footerHeight.constant
-            footerHeight.constant = footerHeight.constant + abs(keyboardHeight - constant)//abs(UIScreen.main.bounds.height - (sendButton.frame.origin.y + sendButton.frame.size.height)))
-//            abs(sendButton.frame.size.height) +
-//            sendButton.frame.origin.y
-            
-//            footerView.frame.origin.y = -=
-//            oldFooterHeight = footerHeight.constant
-//            footerHeight.constant = footerHeight.constant + abs(footerView.frame.size.height - (sendButton.frame.size.height + sendButton.frame.origin.y))
-//
-//            footerHeight.constant = footerHeight.constant - constant
-            
-            UIView.animate(withDuration: 2, animations: {
+            UIView.animate(withDuration: 0.2, animations: {
                 self.view.layoutIfNeeded()
             })
         }
     }
+    
+        override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+            view.endEditing(true)
+            super.touchesBegan(touches, with: event)
+            
+
+            bottomStackViewConstraints.constant = oldBottomStackViewConstraints
+            footerView.layer.cornerRadius = oldCornerRadius
+            footerHeight.constant =  oldFooterHeight
+            
+            UIView.animate(withDuration: 0.3, animations: {
+                self.view.layoutIfNeeded()
+            })
+        }
+    
+    
+//    MARK:- Handle SignIn/SignUp
     
     @IBAction func singIn(_ sender: Any) {
         
@@ -298,21 +297,6 @@ class LoginViewController: UIViewController {
                            alert.addAction(UIAlertAction(title: buttonText, style: .cancel, handler: nil))
                
                            self.present(alert, animated: true)
-    }
-    
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        view.endEditing(true)
-        super.touchesBegan(touches, with: event)
-        
-        guard oldFooterHeight != 0 else { return }
-        footerHeight.constant =  oldFooterHeight
-        oldFooterHeight = 0
-        footerView.layer.cornerRadius = oldCornerRadius
-        
-        UIView.animate(withDuration: 0.3, animations: {
-            self.view.layoutIfNeeded()
-        })
     }
 }
 
