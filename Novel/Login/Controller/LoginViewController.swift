@@ -237,7 +237,7 @@ class LoginViewController: UIViewController {
             if let user = authResult?.user {
                 let userRef = self?.ref.child(user.uid)
                 
-                userRef?.setValue(["email": email, "username": self?.promocode.text ?? "", "uid": user.uid, "refCode": self?.promocode.text ?? "_", "diamondCurrency": 0, "ticketCurrency": 0, "didAddreferalBonus": false])
+                userRef?.setValue(["email": email, "username": "", "uid": user.uid, "refCode": String(self?.promocode.text  ?? "_"), "energyCurrency": 0, "heartCurrency": 0, "didAddreferalBonus": false, "bonusTime": "", "heartBonusTime": ""])
 
                 self?.performSegue(withIdentifier: "moveToMainScreen", sender: self)
             }
@@ -245,14 +245,16 @@ class LoginViewController: UIViewController {
     }
     
     
+//  MARK:- Reset password
+    
     @IBAction func resetPasswordTapped(sender: UIButton) {
         
         let alert = UIAlertController(title: "Сбросить пароль", message: "Пожалуйста, введите вашу почту", preferredStyle: .alert)
         
         alert.addTextField(configurationHandler: nil)
         
-        alert.addAction(UIAlertAction(title: "Отмена", style: UIAlertAction.Style.cancel, handler:nil))
-        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: { (UIAlertAction)in
+        alert.addAction(UIAlertAction(title: "Отмена", style: UIAlertAction.Style.cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: { (UIAlertAction) in
             if let email = alert.textFields?.first?.text {
                 self.resetPassword(forEmail: email.trimmingCharacters(in: .whitespacesAndNewlines))
             }
@@ -272,6 +274,8 @@ class LoginViewController: UIViewController {
     }
     
     
+//  Change authorization type
+    
     @IBAction func changeAuthorizationType(_ sender: Any) {
         if authorizationState == .signUp {
             performSegue(withIdentifier: "changeToSignIn", sender: self)
@@ -290,6 +294,7 @@ class LoginViewController: UIViewController {
             dst.authorizationState = .signUp
         }
     }
+    
     
     func showAlert(title : String, message : String, buttonText : String) {
                let alert = UIAlertController(title: title ,message: message, preferredStyle: .alert)

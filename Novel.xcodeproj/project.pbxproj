@@ -24,6 +24,7 @@
 		2C47400524BCCBA300E4B663 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C47400424BCCBA300E4B663 /* SettingsViewController.swift */; };
 		2C47400B24BD88B000E4B663 /* SectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C47400A24BD88B000E4B663 /* SectionView.swift */; };
 		2C47400F24BDA3B000E4B663 /* BackgroundDecorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C47400E24BDA3AF00E4B663 /* BackgroundDecorationView.swift */; };
+		2C5B171524CE0E4A008B6E21 /* HeartBonusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C5B171424CE0E4A008B6E21 /* HeartBonusView.xib */; };
 		2C71000024C8562B009D7D83 /* BonusUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C71FFFF24C8562B009D7D83 /* BonusUIView.xib */; };
 		2C71FFFE24C85616009D7D83 /* BonusUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C71FFFD24C85616009D7D83 /* BonusUIView.swift */; };
 		2C84B8A424BB11C7006D557A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C84B8A324BB11C7006D557A /* User.swift */; };
@@ -41,6 +42,7 @@
 		2CE088FB24BA47670063D8F8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2CE088F924BA47670063D8F8 /* Main.storyboard */; };
 		2CE088FD24BA47680063D8F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2CE088FC24BA47680063D8F8 /* Assets.xcassets */; };
 		2CE0890024BA47680063D8F8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2CE088FE24BA47680063D8F8 /* LaunchScreen.storyboard */; };
+		2CE261AF24CDEA9800A3DA9B /* HeartBonusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CE261AE24CDEA9800A3DA9B /* HeartBonusView.swift */; };
 		3835D8B0B1B6D7AA844C36F1 /* Pods_Novel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FE2FB5289DC5EF4462DEEED /* Pods_Novel.framework */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +64,7 @@
 		2C47400424BCCBA300E4B663 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		2C47400A24BD88B000E4B663 /* SectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionView.swift; sourceTree = "<group>"; };
 		2C47400E24BDA3AF00E4B663 /* BackgroundDecorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundDecorationView.swift; sourceTree = "<group>"; };
+		2C5B171424CE0E4A008B6E21 /* HeartBonusView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HeartBonusView.xib; sourceTree = "<group>"; };
 		2C71FFFD24C85616009D7D83 /* BonusUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BonusUIView.swift; sourceTree = "<group>"; };
 		2C71FFFF24C8562B009D7D83 /* BonusUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BonusUIView.xib; sourceTree = "<group>"; };
 		2C84B8A324BB11C7006D557A /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -81,6 +84,7 @@
 		2CE088FC24BA47680063D8F8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2CE088FF24BA47680063D8F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2CE0890124BA47680063D8F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2CE261AE24CDEA9800A3DA9B /* HeartBonusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartBonusView.swift; sourceTree = "<group>"; };
 		7FF8DDF9B983945B839198C8 /* Pods-Novel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Novel.debug.xcconfig"; path = "Target Support Files/Pods-Novel/Pods-Novel.debug.xcconfig"; sourceTree = "<group>"; };
 		8FE2FB5289DC5EF4462DEEED /* Pods_Novel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Novel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		97CB737AC0585A9E7ECA6409 /* Pods-Novel.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Novel.release.xcconfig"; path = "Target Support Files/Pods-Novel/Pods-Novel.release.xcconfig"; sourceTree = "<group>"; };
@@ -120,6 +124,8 @@
 			children = (
 				2C71FFFD24C85616009D7D83 /* BonusUIView.swift */,
 				2C71FFFF24C8562B009D7D83 /* BonusUIView.xib */,
+				2CE261AE24CDEA9800A3DA9B /* HeartBonusView.swift */,
+				2C5B171424CE0E4A008B6E21 /* HeartBonusView.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -508,6 +514,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C5B171524CE0E4A008B6E21 /* HeartBonusView.xib in Resources */,
 				2CE0890024BA47680063D8F8 /* LaunchScreen.storyboard in Resources */,
 				2C9FE23324C5C0E000E47DEE /* CustomNavigationBar.xib in Resources */,
 				2CC3FD5824BA4DF9008A604F /* GoogleService-Info.plist in Resources */,
@@ -587,6 +594,7 @@
 				2CC6C29324BF257800DBD220 /* StoryViewController.swift in Sources */,
 				2C4143CA24C063FE0028924A /* Constants.swift in Sources */,
 				2C2C05E524C03F3100B7FCF8 /* CopyableUILabel.swift in Sources */,
+				2CE261AF24CDEA9800A3DA9B /* HeartBonusView.swift in Sources */,
 				2C2C743824BAEAAD001763EC /* LoginViewController.swift in Sources */,
 				2C43789A24BA651900629818 /* ProfileViewController.swift in Sources */,
 				2C43E71524BAF29800F5BBA2 /* CategoryList.swift in Sources */,

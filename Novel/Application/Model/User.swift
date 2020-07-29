@@ -19,6 +19,8 @@ struct AppUser {
     let heartCurrency: Int
     let energyCurrency: Int
     let bonusTime: String
+    let heartBonusTime: String
+    let heartState: String
     
     init(user: User) {
         self.uid = user.uid
@@ -29,6 +31,8 @@ struct AppUser {
         self.energyCurrency = 0
         self.didAddreferalBonus = true
         self.bonusTime = ""
+        self.heartBonusTime = ""
+        self.heartState = ""
     }
     
     init(snapshot: DataSnapshot) {
@@ -41,5 +45,7 @@ struct AppUser {
         energyCurrency = snapshotValue["energyCurrency"] as! Int
         didAddreferalBonus = snapshotValue["didAddreferalBonus"] as! Bool
         bonusTime = snapshotValue["bonusTime"] as! String
+        heartBonusTime = snapshotValue["heartBonusTime"] as! String
+        heartState = snapshotValue["heartState"] as! String
     }
 }

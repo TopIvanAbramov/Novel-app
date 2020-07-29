@@ -30,7 +30,11 @@ class ProfileViewController: UITableViewController {
     }
     
     @IBAction func copyButtonTapped(sender: UIButton) {
-        UIPasteboard.general.string = promocodeLabel.text
+        let link = "https://www.apple.com/ru/itunes/"
+        guard let promoCode = promocodeLabel.text else { return }
+        
+        showShareView(withText: "Привет! Скачивай приложение по этой ссылке (\(link)), и вводи промокод \(promoCode) получай 30 энергий бесплатно!")
+//        UIPasteboard.general.string = promocodeLabel.text
     }
     
     //    MARK: - ViewLifeCycle
@@ -63,12 +67,40 @@ class ProfileViewController: UITableViewController {
         })
     }
     
+    func showShareView(withText text: String) {
+        let textToShare = text
+
+        let activityViewController : UIActivityViewController = UIActivityViewController(
+            activityItems: [textToShare], applicationActivities: nil)
+
+        // This lines is for the popover you need to show in iPad
+        activityViewController.popoverPresentationController?.sourceView = self.view
+
+        // This line remove the arrow of the popover to show in iPad
+//        activityViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.up
+//        activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
+
+        // Anything you want to exclude
+//        activityViewController.excludedActivityTypes = [
+//            UIActivityTypePostToWeibo,
+//            UIActivityTypePrint,
+//            UIActivityTypeAssignToContact,
+//            UIActivityTypeSaveToCameraRoll,
+//            UIActivityTypeAddToReadingList,
+//        ]
+
+        self.present(activityViewController, animated: true, completion: nil)
+
+    }
+    
 
     @IBAction func logOutTapped(sender: Any) {
         
         do {
             try Firebase.Auth.auth().signOut()
             performSegue(withIdentifier: "returnToAuthorization", sender: self)
+            AppDelegate().notificationCenter.removeAllPendingNotificationRequests()
+            AppDelegate().notificationCenter.removeAllDeliveredNotifications()
         } catch {
         }
     }

@@ -16,7 +16,7 @@ enum TypeOfReward {
     case None
 }
 
-class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRewardedAdDelegate, BonusUIViewDelegate {
+class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRewardedAdDelegate, BonusUIViewDelegate, HeartBonusViewDelegate {
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var customNavigationBar: CustomNavigationBar!
@@ -31,6 +31,8 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
     var bonusView: BonusUIView?
     var bonusTappedCompetion = {}
     
+    var heartBonusView: HeartBonusView?
+    
     var blurEffect: UIBlurEffect?
     var currentCellsRowNumber: Int = 1
 
@@ -38,6 +40,8 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
     var activityIndicatorText: UILabel!
     var closeActivityIndicatorClosure: (() -> ())?
     var timer: Timer?
+    
+    var heartBonusState: HeartBonusState = .one
     
 //    MARK: - ViewLifeCycle
     
@@ -58,7 +62,8 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
         collectionView.insetsLayoutMarginsFromSafeArea = false
         
         startActivityIndicator(withBlur: true, andText: "Загружаем истории...", showCloseButton: false, closeCompletion: {})
-//        addreferalBonus()
+        
+        addreferalBonus()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -105,28 +110,102 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
     
     func startObserveUser() {
         let userRef = Database.database().reference(withPath: "users/\(user.uid)")
-        
-        print("User ref: \(userRef.description()) UID: \(user.uid)")
-        
         userRef.observe(.value, with: {(snapshot) in
             if type(of: (snapshot.value  as! [String: AnyObject])) != NSNull.self {
                 self.user = AppUser(snapshot: snapshot)
                 
                 self.customNavigationBar.setHeartCurrency(withValue: self.user.heartCurrency)
                 self.customNavigationBar.setEnergyCurrency(withValue: self.user.energyCurrency)
-                
+                self.heartBonusState = self.parseCurrentBonusState(fromString: self.user.heartState)
                 self.checkForDailyBonus()
                  print("\n\nUpdate user info\n\n")
             }
         })
     }
     
+    func parseCurrentBonusState(fromString string: String) -> HeartBonusState {
+        switch string {
+        case "zero":
+            print(checkIfHeartBonusAvaiable())
+            if checkIfHeartBonusAvaiable() {
+                updateHeartBonus(stateWith: .one)
+                return .one
+            } else {
+                return .zero
+            }
+        case "one":
+            return .one
+        case "two":
+            return .two
+        case "three":
+            return .three
+        default:
+            return .one
+        }
+    }
     
-//  MARK:- NavigationBarDelegate
+    func checkIfHeartBonusAvaiable() -> Bool {
+        print("\n\nCheck if avaialbe\n\n")
+        
+        let currentDate = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss zzz"
+        let date = dateFormatter.date(from: user.heartBonusTime)
+
+        guard let bonusDate = date else { return false}
+        
+        return bonusDate <= currentDate
+    }
     
-    func leftButtonTapped() {
-          self.typeOfReward = .Heart
+    
+    func presentHeartBonusView(withState state: HeartBonusState) {
+        let uiscreenBounds = UIScreen.main.bounds
+        let rect = CGRect(x: 0, y: 0, width: uiscreenBounds.width * 0.8, height: uiscreenBounds.width * 0.8 * 60 / 35)
+        
+        heartBonusView = HeartBonusView(frame: rect)
+        heartBonusView?.center = self.view.center
+        
+        heartBonusView?.state = state
+        heartBonusView?.delegate = self
+        
+        blurEffect = UIBlurEffect(style: UIBlurEffect.Style.extraLight)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = self.view.bounds
+        blurEffectView.tag = 90
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        self.view.addSubview(blurEffectView)
+        self.view.addSubview(heartBonusView!)
+    }
+    
+    func updateHeartBonus(stateWith state: HeartBonusState) {
+        let userRef = Database.database().reference(withPath: "users/\(user.uid)")
+        
+        if state == .zero  {
+            var dateComponents = DateComponents()
+            dateComponents.hour = 24
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss zzz"
             
+            guard let nextDate = Calendar.current.date(byAdding: dateComponents, to: Date()) else { return }
+            let formattedDate = dateFormatter.string(from: nextDate)
+            
+            userRef.child("heartBonusTime").setValue(formattedDate)
+            
+            Notifications().scheduleNotification(withTitle: "Вы получили бонус!", andBody: "Теперь можно смотреть рекламу, чтобы получить серце", onDate: nextDate, withIdentifier: formattedDate)
+        }
+        
+        userRef.child("heartState").setValue(state.description)
+    }
+    
+    func getBonusTapped() {
+//        heartBonusState = heartBonusState.nextState
+        
+        view.viewWithTag(90)?.removeFromSuperview()
+        heartBonusView?.removeFromSuperview()
+        
+        self.typeOfReward = .Heart
+
         // Ad successfully loaded.
         if self.rewardedAdvideo?.isReady == true {
             stopActivityIndicator()
@@ -139,9 +218,48 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
                 self.readyToPresentAd = false
                 self.stopActivityIndicator()
             })
-            
+
             rewardedAdvideo = createAndLoadRewardedAd()
         }
+        
+    }
+    
+    func closeButtonTapped() {
+        view.viewWithTag(90)?.removeFromSuperview()
+        heartBonusView?.removeFromSuperview()
+    }
+    
+    func checkForVideoBonus() {
+        let currentDate = Date()
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss zzz"
+        
+            if !(user.bonusTime.isEmpty) {
+                let date = dateFormatter.date(from: user.heartBonusTime)
+
+                print("User bonusTime not empty")
+                
+                guard let bonusDate = date else { return }
+            
+                print("Bonuse date: \(bonusDate)\n\n")
+                
+                if bonusDate <= currentDate {
+                    presentBonusView(withTitle: "Вы получили ежедневный бонус!", andSubtitle: "Бонус 5 энергий! Заходите каждый день и получайте бесплатно") {
+                        self.updateEnergyCurrency(withValue: Constants().bonuse.referalBonuse)
+                    }
+                    self.setDailyBonus(afterHours: 10)
+                }
+            } else {
+                setDailyBonus(afterHours: 24)
+                
+            }
+    }
+    
+//  MARK:- NavigationBarDelegate
+    
+    func leftButtonTapped() {
+        heartBonusState = parseCurrentBonusState(fromString: user.heartState)
+        presentHeartBonusView(withState: heartBonusState)
     }
     
     func rightButtonTapped() {
@@ -359,6 +477,7 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
         case .Heart:
             presentBonusView(withTitle: "Вы получили бонус!", andSubtitle: "Бонус за просмотр рекламы - 1 сердце", completion: {
                 self.updateHeartCurrency(withValue: 1)
+                self.updateHeartBonus(stateWith: self.heartBonusState.nextState)
             })
             break
         default:
