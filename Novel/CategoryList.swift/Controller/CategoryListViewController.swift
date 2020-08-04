@@ -16,8 +16,8 @@ enum TypeOfReward {
     case None
 }
 
-class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRewardedAdDelegate, BonusUIViewDelegate, HeartBonusViewDelegate {
-
+class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRewardedAdDelegate, BonusUIViewDelegate, HeartBonusViewDelegate, CharacterStyleViewControllerDelegate {
+    
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var customNavigationBar: CustomNavigationBar!
     
@@ -42,14 +42,19 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
     var timer: Timer?
     
     var heartBonusState: HeartBonusState = .one
+    var styleModel : [StyleState: String]?
+    
+    let firebaseService = FirebaseService()
     
 //    MARK: - ViewLifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        guard let currentUser = Auth.auth().currentUser else { return }
-        user = AppUser(user: currentUser)
+        
+        user = firebaseService.getCurrentUser()
+//        guard let currentUser = Auth.auth().currentUser else { return }
+//        user = AppUser(user: currentUser)
         ref = Database.database().reference(withPath: "categories")
         
         collectionView.delegate = self
@@ -69,7 +74,6 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        getBonus()
         
         tabBarController?.title = "Истории"
         
@@ -78,31 +82,14 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
         
         startObserveUser()
         
-        DispatchQueue.global(qos: .background).async {
-            self.ref.observe(.value, with: {[weak self] (snapshot) in
-               var _categories = Array<Category>()
-               var recomendations = Array<Category>()
-               
-               for item in snapshot.children {
-                   let category = Category(snapshot: item as! DataSnapshot)
-                   
-                   if category.name == "Рекомендации" {
-                       recomendations.append(category)
-                   } else {
-                         _categories.append(category)
-                   }
-               }
-               
+        firebaseService.observeCategories {categories in
+            self.categories = categories
             
-               self?.categories = recomendations
-               self?.categories += _categories
-              
-               DispatchQueue.main.async {
-                self?.stopActivityIndicator()
-                   // reload collection view here:
-                    self?.collectionView.reloadData()
-               }
-            })
+             DispatchQueue.main.async {
+                self.stopActivityIndicator()
+                 // reload collection view here:
+                self.collectionView.reloadData()
+             }
         }
     }
     
@@ -118,16 +105,42 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
                 self.customNavigationBar.setEnergyCurrency(withValue: self.user.energyCurrency)
                 self.heartBonusState = self.parseCurrentBonusState(fromString: self.user.heartState)
                 self.checkForDailyBonus()
+                self.styleModel = self.parseStyleModel(fromDict: self.user.characterStyle)
+                
                  print("\n\nUpdate user info\n\n")
             }
         })
     }
     
+    func parseStyleModel(fromDict dict: [String: String]) -> [StyleState: String] {
+        var styleModel : [StyleState: String] = [:]
+        
+        if let gender = dict["гендер"] {
+            styleModel[StyleState.gender] = gender
+        }
+        
+        if let race = dict["раса"] {
+            styleModel[StyleState.race] = race
+        }
+        
+        if let hair = dict["волосы"] {
+            styleModel[StyleState.hair] = hair
+        }
+        
+        return styleModel
+    }
+    
+    func saveNew(styleWithModel model: [StyleState: String]) {
+        firebaseService.updateStyle(forUserWithUID: user.uid, styleWithModel: model) { (model) in
+            self.styleModel = model
+        }
+    }
+    
     func parseCurrentBonusState(fromString string: String) -> HeartBonusState {
         switch string {
         case "zero":
-            print(checkIfHeartBonusAvaiable())
-            if checkIfHeartBonusAvaiable() {
+            print(dailyLimitExceeds())
+            if dailyLimitExceeds() {
                 updateHeartBonus(stateWith: .one)
                 return .one
             } else {
@@ -144,7 +157,7 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
         }
     }
     
-    func checkIfHeartBonusAvaiable() -> Bool {
+    func dailyLimitExceeds() -> Bool {
         print("\n\nCheck if avaialbe\n\n")
         
         let currentDate = Date()
@@ -179,7 +192,6 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
     }
     
     func updateHeartBonus(stateWith state: HeartBonusState) {
-        let userRef = Database.database().reference(withPath: "users/\(user.uid)")
         
         if state == .zero  {
             var dateComponents = DateComponents()
@@ -190,17 +202,15 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
             guard let nextDate = Calendar.current.date(byAdding: dateComponents, to: Date()) else { return }
             let formattedDate = dateFormatter.string(from: nextDate)
             
-            userRef.child("heartBonusTime").setValue(formattedDate)
+            firebaseService.updateHeartBonusTime(forUserWithUID: user.uid, withValue: formattedDate)
             
             Notifications().scheduleNotification(withTitle: "Вы получили бонус!", andBody: "Теперь можно смотреть рекламу, чтобы получить серце", onDate: nextDate, withIdentifier: formattedDate)
         }
         
-        userRef.child("heartState").setValue(state.description)
+        firebaseService.updateHeartState(forUserWithUID: user.uid, withValue: state.description)
     }
     
     func getBonusTapped() {
-//        heartBonusState = heartBonusState.nextState
-        
         view.viewWithTag(90)?.removeFromSuperview()
         heartBonusView?.removeFromSuperview()
         
@@ -282,6 +292,21 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
         }
     }
     
+    func changeStyleTapped() {
+        let characterStyleViewController = CharacterStyleViewController(nibName: "CharacterStyleView", bundle: Bundle.main)
+        characterStyleViewController.delegate = self
+        
+        if let styleModel = styleModel {
+            characterStyleViewController.styleModel = styleModel
+        }
+        
+        characterStyleViewController.modalTransitionStyle = .crossDissolve
+        characterStyleViewController.modalPresentationStyle = .fullScreen
+        characterStyleViewController.isModalInPresentation = true
+        
+        self.present(characterStyleViewController, animated: true, completion: nil)
+    }
+    
 //    MARK:- Activity indicator
     
     func startActivityIndicator(withBlur blur: Bool, andText text: String, showCloseButton: Bool, closeCompletion: @escaping () -> ()) {
@@ -347,17 +372,21 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
         userRef.child("\(user.uid)").observeSingleEvent(of: .value, with: {(snapshot) in
             let user = AppUser(snapshot: snapshot)
             if !(user.didAddreferalBonus) {
+                guard !user.refCode.isEmpty else { return }
                 _ = Constants().getBonuses(completion: { bonuses in
                     
                     self.presentBonusView(withTitle: "Вы получили бонус!", andSubtitle: "Бонус за регистрацию по реферальной ссылке \(bonuses.referalBonuse) энергии") {
-                        userRef.child("\(user.uid)/energyCurrency").setValue((user.energyCurrency) + bonuses.referalBonuse)
-                        userRef.child("\(user.uid)/didAddreferalBonus").setValue(true)
+                        
+                        self.firebaseService.updateEnergyCurrency(withValue: (user.energyCurrency) + bonuses.referalBonuse, forUserWithUID: user.uid)
+                        
+                        self.firebaseService.updateDidAddreferalBonus(forUserWithUID: user.uid, withValue: true)
                     }
                     
                     userRef.child("\(user.refCode)").observeSingleEvent(of: .value, with: {(snapshot) in
                         if snapshot.exists() {
                             let user = AppUser(snapshot: snapshot)
-                            userRef.child("\(user.refCode)/energyCurrency").setValue((user.energyCurrency) + bonuses.referalBonuse)
+                            
+                            self.firebaseService.updateEnergyCurrency(withValue: (user.energyCurrency) + bonuses.referalBonuse, forUserWithUID: user.refCode)
                         }
                     })
 
@@ -445,25 +474,17 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
         ref.child(category4.name).setValue(["name": category4.name, "color": category4.color])
     }
     
-    func getBonus() {
-//        let bonuse = Constants().bonuse
-//        print("Daily bonuse: \(bonuse.dailyBonuse) Referal bonuse: \(bonuse.referalBonuse)")
-        
-       // UUID(uuidString: <#T##String#>)
-       // print("\n\n Hash  value: \("sB8GauHUh".hashValue.hashValue)\n\n")
-    }
     
 //   MARK:- Handle internal currency
     
     func updateEnergyCurrency(withValue value: Int) {
-        let userRef = Database.database().reference(withPath: "users/\(user.uid)")
-        userRef.child("energyCurrency").setValue(user.energyCurrency + value)
+        firebaseService.updateEnergyCurrency(withValue: user.heartCurrency + value, forUserWithUID: user.uid)
     }
     
     func updateHeartCurrency(withValue value: Int) {
-        let userRef = Database.database().reference(withPath: "users/\(user.uid)")
-        userRef.child("heartCurrency").setValue(user.heartCurrency + value)
+        firebaseService.updateHeartCurrency(withValue: user.heartCurrency + value, forUserWithUID: user.uid)
     }
+    
     
 //  MARK:- Handle mobile ad video
     
@@ -571,8 +592,8 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
         guard let nextDate = Calendar.current.date(byAdding: dateComponents, to: Date()) else { return }
         let formattedDate = dateFormatter.string(from: nextDate)
         
-        let userRef = Database.database().reference(withPath: "users/\(user.uid)")
-        userRef.child("bonusTime").setValue(formattedDate)
+        firebaseService.updateBonusTime(forUserWithUID: user.uid, withValue: formattedDate)
+        
         
         Notifications().scheduleNotification(withTitle: "Вы получили бонус!", andBody: "Ежедневный бонус составляет 15 энергий", onDate: nextDate, withIdentifier: formattedDate)
     }
@@ -644,13 +665,7 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
                                                      leading: 8.0,
                                                      bottom: 0.0,
                                                      trailing: 8.0)
-
-        // Group
-//        let group = NSCollectionLayoutGroup.vertical(
-//            layoutSize: NSCollectionLayoutSize(widthDimension:                                                    .fractionalWidth(0.8),
-//                                               heightDimension: .fractionalWidth(0.5)),
-//                                                subitem: item,
-//                                                count: 1)
+        
 
         let group = NSCollectionLayoutGroup.vertical(
         layoutSize: NSCollectionLayoutSize(
@@ -667,10 +682,9 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
                                                         bottom: 16.0,
                                                         trailing: 0.0)
 
-//        section.offs
         
         // 2. Magic: Horizontal Scroll.
-        section.orthogonalScrollingBehavior = .groupPagingCentered
+        section.orthogonalScrollingBehavior = .groupPaging //.groupPagingCentered
 
         // 3. Creating header layout
         section.boundarySupplementaryItems = [headerViewSupplementaryItem]

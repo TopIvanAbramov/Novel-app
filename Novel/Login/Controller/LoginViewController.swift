@@ -237,7 +237,21 @@ class LoginViewController: UIViewController {
             if let user = authResult?.user {
                 let userRef = self?.ref.child(user.uid)
                 
-                userRef?.setValue(["email": email, "username": "", "uid": user.uid, "refCode": String(self?.promocode.text  ?? "_"), "energyCurrency": 0, "heartCurrency": 0, "didAddreferalBonus": false, "bonusTime": "", "heartBonusTime": ""])
+                userRef?.setValue(["email": email,
+                                   "username": "",
+                                   "uid": user.uid,
+                                   "refCode": String(self?.promocode.text  ?? "_"),
+                                   "energyCurrency": 0, "heartCurrency": 0,
+                                   "didAddreferalBonus": false,
+                                   "bonusTime": "",
+                                   "heartBonusTime": "",
+                                   "heartState": "one",
+                                    "characterStyle": [
+                                        "гендер" : "женщина",
+                                        "раса"   : "европеец",
+                                        "волосы" : "длинные"
+                                    ]
+                                ])
 
                 self?.performSegue(withIdentifier: "moveToMainScreen", sender: self)
             }

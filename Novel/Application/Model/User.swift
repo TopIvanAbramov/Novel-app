@@ -21,6 +21,7 @@ struct AppUser {
     let bonusTime: String
     let heartBonusTime: String
     let heartState: String
+    let characterStyle: [String: String]
     
     init(user: User) {
         self.uid = user.uid
@@ -33,6 +34,11 @@ struct AppUser {
         self.bonusTime = ""
         self.heartBonusTime = ""
         self.heartState = ""
+        self.characterStyle = [
+            "гендер" : "женщина",
+            "раса"   : "европеец",
+            "волосы" : "длинные"
+        ]
     }
     
     init(snapshot: DataSnapshot) {
@@ -47,5 +53,6 @@ struct AppUser {
         bonusTime = snapshotValue["bonusTime"] as! String
         heartBonusTime = snapshotValue["heartBonusTime"] as! String
         heartState = snapshotValue["heartState"] as! String
+        characterStyle = snapshotValue["characterStyle"] as! [String: String]
     }
 }

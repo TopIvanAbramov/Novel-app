@@ -14,6 +14,7 @@
                 <outlet property="heartCurrency" destination="UPv-wu-o0f" id="Xyc-nh-K9m"/>
                 <outlet property="leffButton" destination="bo9-MH-ceJ" id="8l5-5d-cYQ"/>
                 <outlet property="rightButton" destination="Xf1-y8-QYy" id="Zv3-Ek-kN5"/>
+                <outlet property="styleButtonView" destination="EdO-dR-JxP" id="I3z-bl-0R7"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -106,6 +107,27 @@
                                 <action selector="rightButtonTapped:" destination="-1" eventType="touchUpInside" id="wx3-2W-eNR"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EdO-dR-JxP" customClass="RoundButton" customModule="Novel" customModuleProvider="target">
+                            <rect key="frame" x="10" y="12.5" width="45" height="45"/>
+                            <color key="backgroundColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="45" id="CTR-Nr-vwU"/>
+                                <constraint firstAttribute="width" secondItem="EdO-dR-JxP" secondAttribute="height" multiplier="1:1" id="Ece-Hx-Uth"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="4"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" image="costume">
+                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="5" scale="small"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="22"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="changeStyleTapped:" destination="-1" eventType="touchUpInside" id="WMu-4a-xBh"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" red="0.55686277149999996" green="0.35294118520000001" blue="0.96862745289999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -115,7 +137,9 @@
                         <constraint firstItem="Xf1-y8-QYy" firstAttribute="top" secondItem="WUu-uo-3F2" secondAttribute="bottom" constant="-15" id="Dg4-hj-kSY"/>
                         <constraint firstItem="Kjj-fQ-jn1" firstAttribute="centerX" secondItem="gQP-C2-YLH" secondAttribute="centerX" id="Nzd-Da-uCG"/>
                         <constraint firstItem="Xf1-y8-QYy" firstAttribute="leading" secondItem="WUu-uo-3F2" secondAttribute="trailing" constant="-10" id="gA1-79-pB1"/>
+                        <constraint firstItem="EdO-dR-JxP" firstAttribute="leading" secondItem="gQP-C2-YLH" secondAttribute="leading" constant="10" id="j6Q-BE-JPM"/>
                         <constraint firstItem="bo9-MH-ceJ" firstAttribute="top" secondItem="Nbi-85-NIo" secondAttribute="bottom" constant="-15" id="mfY-bj-luI"/>
+                        <constraint firstItem="EdO-dR-JxP" firstAttribute="centerY" secondItem="gQP-C2-YLH" secondAttribute="centerY" id="rxf-DX-ryw"/>
                     </constraints>
                 </view>
             </subviews>
@@ -133,6 +157,7 @@
         </view>
     </objects>
     <resources>
+        <image name="costume" width="50" height="50"/>
         <image name="heart" width="37.5" height="37.5"/>
         <image name="lightning_bolt" width="40" height="40"/>
         <image name="plus.circle.fill" catalog="system" width="128" height="121"/>

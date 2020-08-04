@@ -11,6 +11,7 @@ import UIKit
 protocol NavigationBarDelegate: class {
     func leftButtonTapped()
     func rightButtonTapped()
+    func changeStyleTapped()
 }
 
 @IBDesignable class CustomNavigationBar: UIView {
@@ -19,6 +20,7 @@ protocol NavigationBarDelegate: class {
     
     @IBOutlet weak var leftButtonView: UIButton!
     @IBOutlet weak var rightButtonView: UIButton!
+    @IBOutlet weak var styleButtonView: UIButton!
     @IBOutlet weak var leffButton: UIButton!
     @IBOutlet weak var rightButton: UIButton!
     @IBOutlet weak var contentView: UIView!
@@ -60,6 +62,10 @@ protocol NavigationBarDelegate: class {
    @IBAction func rightButtonTapped(_ sender: Any) {
        delegate?.rightButtonTapped()
    }
+    
+    @IBAction func changeStyleTapped(_ sender: Any) {
+        delegate?.changeStyleTapped()
+    }
      
     func updateHeartCurrency(withValue value: Int) {
         if let currentCurrency = Int((heartCurrency.text)!) {

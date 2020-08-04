@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C0164E224D1ABC0008D7437 /* CharacterStyleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C0164E124D1ABC0008D7437 /* CharacterStyleView.xib */; };
+		2C0164E424D1ABEA008D7437 /* CharacterStyleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0164E324D1ABEA008D7437 /* CharacterStyleViewController.swift */; };
 		2C1F1D9724C193550088711B /* RecomendationsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C1F1D9624C193550088711B /* RecomendationsCollectionViewCell.swift */; };
 		2C2C05E524C03F3100B7FCF8 /* CopyableUILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2C05E424C03F3100B7FCF8 /* CopyableUILabel.swift */; };
 		2C2C743824BAEAAD001763EC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2C743724BAEAAD001763EC /* LoginViewController.swift */; };
@@ -31,6 +33,7 @@
 		2C9FE23124C5C0D000E47DEE /* CustomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9FE23024C5C0D000E47DEE /* CustomNavigationBar.swift */; };
 		2C9FE23324C5C0E000E47DEE /* CustomNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C9FE23224C5C0E000E47DEE /* CustomNavigationBar.xib */; };
 		2CB0352D24BF0A7600AFD297 /* MainScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB0352C24BF0A7600AFD297 /* MainScreenViewController.swift */; };
+		2CB9682524D9B93C00B6E673 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB9682424D9B93C00B6E673 /* FirebaseService.swift */; };
 		2CC3FD5524BA4B22008A604F /* ChooseAuthorizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC3FD5224BA4B22008A604F /* ChooseAuthorizationViewController.swift */; };
 		2CC3FD5824BA4DF9008A604F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2CC3FD5724BA4DF9008A604F /* GoogleService-Info.plist */; };
 		2CC3FD5B24BA5477008A604F /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC3FD5A24BA5477008A604F /* RoundButton.swift */; };
@@ -47,6 +50,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2C0164E124D1ABC0008D7437 /* CharacterStyleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CharacterStyleView.xib; sourceTree = "<group>"; };
+		2C0164E324D1ABEA008D7437 /* CharacterStyleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterStyleViewController.swift; sourceTree = "<group>"; };
 		2C1F1D9624C193550088711B /* RecomendationsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecomendationsCollectionViewCell.swift; sourceTree = "<group>"; };
 		2C2C05E424C03F3100B7FCF8 /* CopyableUILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyableUILabel.swift; sourceTree = "<group>"; };
 		2C2C743724BAEAAD001763EC /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -71,6 +76,7 @@
 		2C9FE23024C5C0D000E47DEE /* CustomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomNavigationBar.swift; path = Novel/CategoryList.swift/CustomNavigationBar.swift; sourceTree = SOURCE_ROOT; };
 		2C9FE23224C5C0E000E47DEE /* CustomNavigationBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomNavigationBar.xib; sourceTree = "<group>"; };
 		2CB0352C24BF0A7600AFD297 /* MainScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainScreenViewController.swift; path = Novel/CategoryList.swift/MainScreenViewController.swift; sourceTree = SOURCE_ROOT; };
+		2CB9682424D9B93C00B6E673 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		2CC3FD5224BA4B22008A604F /* ChooseAuthorizationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseAuthorizationViewController.swift; sourceTree = "<group>"; };
 		2CC3FD5724BA4DF9008A604F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2CC3FD5A24BA5477008A604F /* RoundButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
@@ -102,6 +108,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2C0164DD24D1AB6F008D7437 /* CharacterStyle */ = {
+			isa = PBXGroup;
+			children = (
+				2C0164E024D1AB9A008D7437 /* Model */,
+				2C0164DF24D1AB90008D7437 /* View */,
+				2C0164DE24D1AB81008D7437 /* Controller */,
+			);
+			path = CharacterStyle;
+			sourceTree = "<group>";
+		};
+		2C0164DE24D1AB81008D7437 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		2C0164DF24D1AB90008D7437 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2C0164E124D1ABC0008D7437 /* CharacterStyleView.xib */,
+				2C0164E324D1ABEA008D7437 /* CharacterStyleViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		2C0164E024D1AB9A008D7437 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		2C1F1D9824C2F25A0088711B /* Bonuses */ = {
 			isa = PBXGroup;
 			children = (
@@ -277,6 +316,14 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		2CB9682324D9B92400B6E673 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				2CB9682424D9B93C00B6E673 /* FirebaseService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		2CC3FD5924BA5460008A604F /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -339,7 +386,9 @@
 		2CE088F224BA47670063D8F8 /* Novel */ = {
 			isa = PBXGroup;
 			children = (
+				2CB9682324D9B92400B6E673 /* Services */,
 				2CE0890724BA478C0063D8F8 /* Application */,
+				2C0164DD24D1AB6F008D7437 /* CharacterStyle */,
 				2C1F1D9824C2F25A0088711B /* Bonuses */,
 				2CC6C28E24BF254000DBD220 /* Story */,
 				2C47400024BCCB6900E4B663 /* Settings */,
@@ -514,6 +563,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C0164E224D1ABC0008D7437 /* CharacterStyleView.xib in Resources */,
 				2C5B171524CE0E4A008B6E21 /* HeartBonusView.xib in Resources */,
 				2CE0890024BA47680063D8F8 /* LaunchScreen.storyboard in Resources */,
 				2C9FE23324C5C0E000E47DEE /* CustomNavigationBar.xib in Resources */,
@@ -606,8 +656,10 @@
 				2CC6C29524BF294E00DBD220 /* MainUITabBarController.swift in Sources */,
 				2C43E71124BAEFB500F5BBA2 /* CategoryListViewController.swift in Sources */,
 				2CC3FD5B24BA5477008A604F /* RoundButton.swift in Sources */,
+				2CB9682524D9B93C00B6E673 /* FirebaseService.swift in Sources */,
 				2C47400524BCCBA300E4B663 /* SettingsViewController.swift in Sources */,
 				2C9FE23124C5C0D000E47DEE /* CustomNavigationBar.swift in Sources */,
+				2C0164E424D1ABEA008D7437 /* CharacterStyleViewController.swift in Sources */,
 				2CE088F424BA47670063D8F8 /* AppDelegate.swift in Sources */,
 				2CE088F624BA47670063D8F8 /* SceneDelegate.swift in Sources */,
 				2C31753024BC66A700AD5907 /* HistoryListCollectionViewController.swift in Sources */,
