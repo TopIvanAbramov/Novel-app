@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import GoogleMobileAds
+import SkeletonView
 
 enum TypeOfReward {
     case Heart
@@ -45,30 +46,41 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
     var styleModel : [StyleState: String]?
     
     let firebaseService = FirebaseService()
-    
+
 //    MARK: - ViewLifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
         user = firebaseService.getCurrentUser()
 //        guard let currentUser = Auth.auth().currentUser else { return }
 //        user = AppUser(user: currentUser)
         ref = Database.database().reference(withPath: "categories")
         
+        
         collectionView.delegate = self
         collectionView.dataSource = self
+        
+        
         collectionView.collectionViewLayout = compositionalLayout
         
         customNavigationBar.delegate = self
         
+//        self.collectionView.showAnimatedGradientSkeleton()
+//        startAnimations()
         
-        collectionView.insetsLayoutMarginsFromSafeArea = false
+//        collectionView.insetsLayoutMarginsFromSafeArea = false
         
-        startActivityIndicator(withBlur: true, andText: "Загружаем истории...", showCloseButton: false, closeCompletion: {})
+//        startActivityIndicator(withBlur: true, andText: "Загружаем истории...", showCloseButton: false, closeCompletion: {})
+        
+        startAnimations()
         
         addreferalBonus()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+//        startAnimations()
+//        self.collectionView.showAnimatedGradientSkeleton()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -82,14 +94,17 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
         
         startObserveUser()
         
+//        self.collectionView.showAnimatedGradientSkeleton()
+        
         firebaseService.observeCategories {categories in
             self.categories = categories
             
              DispatchQueue.main.async {
-                self.stopActivityIndicator()
-                 // reload collection view here:
                 self.collectionView.reloadData()
              }
+            
+            self.stopAnimations()
+            
         }
     }
     
@@ -265,9 +280,15 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
             }
     }
     
+    
+    override func viewDidLayoutSubviews() {
+        view.layoutSkeletonIfNeeded()
+    }
+    
 //  MARK:- NavigationBarDelegate
     
     func leftButtonTapped() {
+//        self.collectionView.showAnimatedGradientSkeleton()
         heartBonusState = parseCurrentBonusState(fromString: user.heartState)
         presentHeartBonusView(withState: heartBonusState)
     }
@@ -562,7 +583,7 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
                 }
                 self.setDailyBonus(afterHours: 10)
             } else {
-                print("Change to >=")
+                
             }
         } else {
             setDailyBonus(afterHours: 24)
@@ -698,12 +719,11 @@ class CategoryListViewController: UIViewController, NavigationBarDelegate, GADRe
     
 //  Set section background color
     
-    func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
-        if elementKind == "background" {
-            view.backgroundColor = UIColor(hex: categories[indexPath.section].color)
-        }
-
-    }
+//    func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
+//        if elementKind == "background" {
+//            view.backgroundColor = UIColor(hex: categories[indexPath.section].color)
+//        }
+//    }
     
     private lazy var headerViewSupplementaryItem: NSCollectionLayoutBoundarySupplementaryItem = {
         let headerViewItem = NSCollectionLayoutBoundarySupplementaryItem(
@@ -757,16 +777,10 @@ extension CategoryListViewController: UICollectionViewDataSource, UICollectionVi
         }
             
         headerView.label.text = categories[indexPath.section].name
-        
-//        headerView.backgroundColor = #colorLiteral(red: 1, green: 0.9127054811, blue: 0, alpha: 0.5535875803)
-        headerView.backgroundView.backgroundColor = .clear //#colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1) //#colorLiteral(red: 1, green: 0.9127054811, blue: 0, alpha: 0.5535875803)
+        headerView.backgroundView.backgroundColor = .clear
         
         headerView.layer.cornerRadius = 8
         headerView.clipsToBounds = true
-//        headerView.layer
-//        footerView.layer.cornerRadius = 50
-//        footerView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-//        footerView.clipsToBounds = true
         
         return headerView
       default:
@@ -789,26 +803,22 @@ extension CategoryListViewController: UICollectionViewDataSource, UICollectionVi
                 cell.layer.shadowColor = UIColor.black.cgColor
 
                 // add corner radius on `contentView`
-                cell.contentView.backgroundColor = .clear //.white
+                cell.contentView.backgroundColor = .clear
                 cell.contentView.layer.cornerRadius = 8
                 
                 
                 cell.textLabel.text = "Vintage Tales Norman Clougu"
                 cell.footerImageView.backgroundColor = #colorLiteral(red: 0.8011650443, green: 0.8013004661, blue: 0.8011472821, alpha: 0.5802489131)
                 cell.backgroundImage.image = UIImage(named: "recomendations")
-        
+                
+                cell.hideSkeleton()
+                cell.stopSkeletonAnimation()
+                
                 return cell
             
             
         default:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "history", for: indexPath) as! HistoryCollectionViewCell
-
-//                cell.backgroundColor = .clear
-//                cell.layer.masksToBounds = false
-//                cell.layer.shadowOpacity = 0.23
-//                cell.layer.shadowRadius = 4
-//                cell.layer.shadowOffset = CGSize(width: 0, height: 0)
-//                cell.layer.shadowColor = UIColor.black.cgColor
                 
                 cell.historyImage.backgroundColor = .clear
                 cell.historyImage.layer.masksToBounds = false
@@ -820,14 +830,16 @@ extension CategoryListViewController: UICollectionViewDataSource, UICollectionVi
                 
 
                 // add corner radius on 'contentView'
-//                cell.contentView.layer.cornerRadius = 8
                 
                 cell.historyImage.layer.cornerRadius = 8
                 
                 cell.historyName.text = "Vintage Tales Norman Clougi"
                 
                 cell.historyImage.image = UIImage(named: "book-cover")
-            
+                
+                cell.hideSkeleton()
+                cell.stopSkeletonAnimation()
+                
                 return cell
         }
     }
@@ -836,6 +848,25 @@ extension CategoryListViewController: UICollectionViewDataSource, UICollectionVi
         cell.contentView.layer.masksToBounds = true
         let radius = cell.contentView.layer.cornerRadius
         cell.layer.shadowPath = UIBezierPath(roundedRect: cell.bounds, cornerRadius: radius).cgPath
+    }
+    
+//    MARK:- Skeleton Animations
+    
+    func startAnimations() {
+//        collectionView.prepareSkeleton { _ in
+            self.collectionView.showAnimatedGradientSkeleton()
+//        }
+        
+    }
+    
+    func stopAnimations() {
+//        collectionView.prepareSkeleton { _ in
+            self.collectionView.stopSkeletonAnimation()
+            self.collectionView.hideSkeleton()
+//        }
+        
+//        collectionView.stopSkeletonAnimation()
+//        collectionView.hideSkeleton()
     }
 }
 
@@ -910,4 +941,28 @@ extension UIColor {
         }
     }
 
+}
+
+extension CategoryListViewController: SkeletonCollectionViewDataSource {
+    
+    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        switch indexPath.section {
+           case 0:
+               return "recomendations"
+           default:
+               return "history"
+           }
+    }
+    
+    func numSections(in collectionSkeletonView: UICollectionView) -> Int {
+        return 5
+    }
+
+    func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 10
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UICollectionView, supplementaryViewIdentifierOfKind: String, at indexPath: IndexPath) -> ReusableCellIdentifier? {
+        return "sectionHeader"
+    }
 }

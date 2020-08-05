@@ -18,8 +18,13 @@ class ProfileViewController: UITableViewController {
     var user: AppUser!
     var categories = Array<Category>()
     
+    @IBOutlet var skeletonableViews: [UILabel]!
+    @IBOutlet weak var shareButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        startAnimations()
     }
     
     func setupprofile() {
@@ -64,6 +69,10 @@ class ProfileViewController: UITableViewController {
         self.ref.observe(.value, with: {[weak self] (snapshot) in
             self?.user = AppUser(snapshot: snapshot)
             self?.setupprofile()
+            
+            self?.promocodeLabel.hideSkeleton()
+            
+            self?.stopAnimations()
         })
     }
     
@@ -75,19 +84,6 @@ class ProfileViewController: UITableViewController {
 
         // This lines is for the popover you need to show in iPad
         activityViewController.popoverPresentationController?.sourceView = self.view
-
-        // This line remove the arrow of the popover to show in iPad
-//        activityViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.up
-//        activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
-
-        // Anything you want to exclude
-//        activityViewController.excludedActivityTypes = [
-//            UIActivityTypePostToWeibo,
-//            UIActivityTypePrint,
-//            UIActivityTypeAssignToContact,
-//            UIActivityTypeSaveToCameraRoll,
-//            UIActivityTypeAddToReadingList,
-//        ]
 
         self.present(activityViewController, animated: true, completion: nil)
 
@@ -105,5 +101,21 @@ class ProfileViewController: UITableViewController {
         }
     }
     
+//    MARK:- Skeleton animations
+    
+    func startAnimations() {
+        for label in skeletonableViews {
+            label.showAnimatedGradientSkeleton()
+        }
+        shareButton.isUserInteractionEnabled = false
+    }
+    
+    func stopAnimations() {
+        for label in skeletonableViews {
+            label.stopSkeletonAnimation()
+            label.hideSkeleton()
+        }
+        shareButton.isUserInteractionEnabled = true
+    }
     
 }
